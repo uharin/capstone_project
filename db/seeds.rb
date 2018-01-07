@@ -1,6 +1,17 @@
 
 
 # ========================
+# Create Posts
+# ========================
+
+Post.create!({user_id: 1, board_thread_id: 2})
+Post.create!({user_id: 2, board_thread_id: 4})
+Post.create!({user_id: 3, board_thread_id: 2})
+Post.create!({user_id: 3, board_thread_id: 3})
+Post.create!({user_id: 2, board_thread_id: 4})
+Post.create!({user_id: 1, board_thread_id: 5})
+
+# ========================
 # Create User_Actions
 # ========================
 
