@@ -1,4 +1,10 @@
 class AddressesController < ApplicationController
+  before_action :authenticate_user
+
+  def index
+    addresses = Address.all
+    render json: addresses.as_json
+  end
 
   def create
     address = Address.new({

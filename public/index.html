@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My App</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  <script src="index.js" defer></script>
+</head>
+<body>
+  
+  <div id="vue-app">
+
+    <router-view></router-view>
+
+
+  </div>
+</body>
+</html>
+
+<!--======== HOMEPAGE =========-->
+
+<template id="home-page">
+  <div class="vue-component">
+
+    <!-- PRINT USERS -->
+    <div v-for="user in users">
+      <p>Name : {{user.first_name}} {{user.last_name}}</p>
+      <p>Points: {{user.points}}</p>
+      <p>Username: {{user.username}}</p>
+      <hr>
+    </div>
+    
+  </div>
+</template>
+
+<!--======== PLACES =========-->
+
+<template id="places">
+    <div>
+      <!-- PRINT PLACES -->
+      <div v-for="place in places">
+        <p>Name: {{place.name}}</p>
+        <p>Address: {{place.formatted_address}}</p>
+        <p>Icon: {{place.icon}}</p>
+        <hr>
+      </div>
+    </div>
+</template>
+
+<!--======== USERACTIONS =========-->
+
+<template id="useractions">
+    <div>
+      <!-- PRINT PLACES -->
+      <div v-for="action in useractions">
+        <p>Name: {{place.name}}</p>
+        <p>Address: {{place.formatted_address}}</p>
+        <p>Icon: {{place.icon}}</p>
+        <hr>
+      </div>
+    </div>
+</template>
+

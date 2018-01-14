@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post 'user_token' => 'user_token#create'
   get '/users' => 'users#index'
   post '/users' => 'users#create'
   patch '/users' => 'users#update'
@@ -19,4 +20,6 @@ Rails.application.routes.draw do
   post '/threads' => 'threads#create'
   patch '/threads' => 'threads#update'
   delete '/threads' => 'threads#destroy' 
+
+  get '/places' => 'places#index'
 end

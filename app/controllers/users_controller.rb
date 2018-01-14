@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 
   def index
+    # api_info = Unirest.get('https://maps.googleapis.com/maps/api/js?key=#{ENV["API_KEY"]}&callback=initMap');
+    # render json: api_info.as_json
     all_users = User.all
     render json: all_users.as_json
   end
@@ -9,11 +11,14 @@ class UsersController < ApplicationController
     user = User.new({
       first_name: params[:first_name],
       last_name: params[:last_name],
-      username: params[:username]
+      username: params[:username],
+      password: params[:password],
+      password_confirmation: params[:password_confirmation]
       })
     if user.save
-      Address.new({
-        city: params[:city]
+      Address.create({
+        user_id: user.id,
+        zip: params[:zip]
         })
       render json: user.as_json
     else
