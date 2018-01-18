@@ -41,7 +41,7 @@ while true
     "http://localhost:3000/user_token",
     parameters: {
       auth: {
-        username: username,
+        email: username,
         password: user_password
       }
     }
