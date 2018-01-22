@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118014750) do
+ActiveRecord::Schema.define(version: 20180121222625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,21 +22,22 @@ ActiveRecord::Schema.define(version: 20180118014750) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "addresses", force: :cascade do |t|
-    t.integer "address_number"
-    t.string "street"
+  create_table "board_threads", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "street_address"
     t.string "city"
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "zip"
-  end
-
-  create_table "board_threads", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -58,7 +59,7 @@ ActiveRecord::Schema.define(version: 20180118014750) do
     t.string "last_name"
     t.bigint "points"
     t.string "email"
-    t.integer "address_id"
+    t.integer "location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"

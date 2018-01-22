@@ -7,10 +7,10 @@ Rails.application.routes.draw do
   patch '/users' => 'users#update'
   delete '/users' => 'users#destroy'
 
-  get '/addresses' => 'addresses#index'
-  post '/addresses' => 'addresses#create'
-  patch '/addresses' => 'addresses#update'
-  delete '/addresses' => 'addresses#destroy'  
+  get '/locations' => 'locations#index'
+  post '/locations' => 'locations#create'
+  patch '/locations' => 'locations#update'
+  delete '/locations' => 'locations#destroy'  
 
   get '/posts' => 'posts#index'
   post '/posts' => 'posts#create'

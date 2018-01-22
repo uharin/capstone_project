@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       password_confirmation: params[:password_confirmation]
       })
     if user.save
-      Address.create({
+      Location.create({
         user_id: user.id,
         zip: params[:zip]
         })

@@ -1,7 +1,7 @@
 class User < ApplicationRecord
 
 # Database Associations 
-  has_many :addresses
+  has_many :locations
   has_many :user_actions
   has_many :actions, through: :user_actions
   has_many :posts

@@ -13,7 +13,7 @@ var HomePage = {
       first_name: "",
       last_name: "",
       points: "",
-      email: "",
+      email: "", 
       // name: "",
       // address: "",
       // icon: ""
@@ -77,6 +77,60 @@ var Places = {
 
   computed: {
 
+  }
+};
+
+// ===================================
+// LOCATIONS
+// ===================================
+
+var Locations = {
+  template: "#locations",
+  data: function() {
+    return {
+      locations: []
+    };
+  },
+  created: function() {
+    axios.get('/locations').then(function(response) {
+      console.log(response.data);
+      this.locations = response.data;
+    }.bind(this));
+  },
+  methods: {
+
+  },
+};
+
+// ===================================
+// ADD LOCATION
+// ===================================
+
+var NewLocation = {
+  template: "#new-location",
+  data: function() {
+    return {
+      location: {
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: ""
+      }
+      
+    };
+  },
+  methods: {
+    createLocation: function() {
+      var params = {
+        street_address: this.location.streetAddress,
+        city: this.location.city,
+        state: this.location.state,
+        zip: this.location.zip
+      };
+      axios.post("/locations", params).then(function(response) {
+        router.push("/locations");
+      }.bind(this));
+    }
   }
 };
 
@@ -210,7 +264,9 @@ var router = new VueRouter({
     { path: "/useractions", component: UserActions },
     { path: "/signup", component: SignUp },
     { path: "/login", component: Login },
-    { path: "/logout", component: Logout }
+    { path: "/logout", component: Logout },
+    { path: "/locations", component: Locations},
+    { path: "/locations/new", component: NewLocation}
   ],
   scrollBehavior: function(to, from, savedPosition) {
     return { x: 0, y: 0 };
