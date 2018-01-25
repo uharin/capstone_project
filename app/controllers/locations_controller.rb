@@ -1,8 +1,8 @@
 class LocationsController < ApplicationController
-  # before_action :authenticate_user
+  before_action :authenticate_user
 
   def index
-    locations = Location.all
+    locations = current_user.locations
     render json: locations.as_json
   end
 
@@ -47,7 +47,7 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    location = Location.find_by(id: params[:location_id])
+    location = Location.find_by(id: params[:id])
     location.destroy
   end
 

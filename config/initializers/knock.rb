@@ -9,6 +9,9 @@ Knock.setup do |config|
   ## Default:
   # config.token_lifetime = 1.day
 
+  # jwks_raw = Net::HTTP.get URI(Rails.application.secrets.auth0_rsa_domain)
+  # jwks_keys = Array(JSON.parse(jwks_raw)['keys'])
+  # config.token_public_key = OpenSSL::X509::Certificate.new(Base64.decode64(jwks_keys[0]['x5c'].first)).public_key
 
   ## Audience claim
   ## --------------
@@ -37,7 +40,7 @@ Knock.setup do |config|
   ##
   ## Default:
   # config.token_secret_signature_key = -> { Rails.application.secrets.secret_key_base }
-
+  config.token_signature_algorithm = 'RS256'
   ## If using Auth0, uncomment the line below
   # config.token_secret_signature_key = -> { JWT.base64url_decode Rails.application.secrets.auth0_client_secret }
 

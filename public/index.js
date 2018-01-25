@@ -98,7 +98,20 @@ var Locations = {
     }.bind(this));
   },
   methods: {
-
+    deleteLocation: function(inputLocation) {
+      var params = {
+        location_id: inputLocation.id
+      };
+      axios.delete('/locations/' + inputLocation.id).then(function(response) {
+        this.locations.splice(this.locations.indexOf(inputLocation), 1);
+        router.push('/locations');
+      }.bind(this));
+    },
+    editLocation: function(inputLocation) {
+      axios.get("/locations/" + inputLocation.id + "/edit").then(function(response) {
+        router.push("/locations");
+      }.bind(this));
+    }
   },
 };
 
@@ -129,6 +142,37 @@ var NewLocation = {
       };
       axios.post("/locations", params).then(function(response) {
         router.push("/locations");
+      }.bind(this));
+    }
+  }
+};
+
+// ===================================
+// UPDATE LOCATION
+// ===================================
+
+var UpdateLocation = {
+  template: "#edit-location",
+  data: function() {
+    return {
+      location: {
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: ""
+      }
+    };
+  },
+  methods: {
+    updateLocation: function(inputLocation) {
+      // var params = {
+      //   street_address: this.location.streetAddress,
+      //   city: this.location.city,
+      //   state: this.location.state,
+      //   zip: this.location.zip
+      // };
+      axios.get("/locations/" + inputLocation.id + "/edit").then(function(response) {
+        router.push("/locations" + inputLocation.id + "/edit");
       }.bind(this));
     }
   }
@@ -225,7 +269,7 @@ var Login = {
       var params = {
         auth: { email: this.email, password: this.password }
       };
-      axios.post('/user_token', params)
+      axios.post("/user_token", params)
         .then(function(response) {
           axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
@@ -266,6 +310,7 @@ var router = new VueRouter({
     { path: "/login", component: Login },
     { path: "/logout", component: Logout },
     { path: "/locations", component: Locations},
+    { path: "/locations/:id/edit", component: UpdateLocation},
     { path: "/locations/new", component: NewLocation}
   ],
   scrollBehavior: function(to, from, savedPosition) {
@@ -281,5 +326,12 @@ var router = new VueRouter({
 
 var app = new Vue({
   el: "#vue-app",
-  router: router
+  router: router,
+  created: function() {
+    var jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      axios.defaults.headers.common["Authorization"] = jwt;
+    }
+  }
+
 });

@@ -5,22 +5,24 @@ Rails.application.routes.draw do
   get '/users' => 'users#index'
   post '/users' => 'users#create'
   patch '/users' => 'users#update'
-  delete '/users' => 'users#destroy'
+  delete '/users/:id' => 'users#destroy'
 
   get '/locations' => 'locations#index'
+  get '/locations/new' => 'locations#new'
   post '/locations' => 'locations#create'
+  get '/locations/:id/edit' => 'locations#edit'
   patch '/locations' => 'locations#update'
-  delete '/locations' => 'locations#destroy'  
+  delete '/locations/:id' => 'locations#destroy'  
 
   get '/posts' => 'posts#index'
   post '/posts' => 'posts#create'
   patch '/posts' => 'posts#update'
-  delete '/posts' => 'posts#destroy'
+  delete '/posts/:id' => 'posts#destroy'
 
   get '/threads' => 'threads#index'
   post '/threads' => 'threads#create'
   patch '/threads' => 'threads#update'
-  delete '/threads' => 'threads#destroy' 
+  delete '/threads/:id' => 'threads#destroy' 
 
   get '/places' => 'places#index'
 end
