@@ -1,5 +1,10 @@
 /* global Vue, VueRouter, axios */
 
+
+// ===================================
+// COMPONENTS SECTION
+// ===================================
+
 // ===================================
 // HOMEPAGE
 // ===================================
@@ -8,12 +13,14 @@ var HomePage = {
   template: "#home-page",
   data: function() {
     return {
-      users: [],
-      places: [],
-      first_name: "",
-      last_name: "",
-      points: "",
-      email: "", 
+      message: 
+        "Welcome to Wurld!"
+      // users: [],
+      // places: [],
+      // first_name: "",
+      // last_name: "",
+      // points: "",
+      // email: "", 
       // name: "",
       // address: "",
       // icon: ""
@@ -24,10 +31,10 @@ var HomePage = {
   
   // THIS CODE WORKS TO GRAB DATA FROM USERS
 
-    axios.get('/users').then(function(response) {
-      console.log(response.data);
-      this.users = response.data;
-    }.bind(this));
+    // axios.get('/users').then(function(response) {
+    //   console.log(response.data);
+    //   this.users = response.data;
+    // }.bind(this));
     
   // THIS CODE WORKS TO GRAB DATA FROM GMAPS
   
@@ -37,6 +44,32 @@ var HomePage = {
   //   }.bind(this));
   },
 
+  methods: {
+
+  },
+
+  computed: {
+
+  }
+};
+
+// ===================================
+// HOMEPAGE
+// ===================================
+
+var Dashboard = {
+  template: "#dashboard",
+  data: function() {
+    return {
+      message: 
+        "This is the dashboard!"
+      
+    };
+  },
+
+  created: function() {
+  
+  },
   methods: {
 
   },
@@ -108,9 +141,10 @@ var Locations = {
       }.bind(this));
     },
     editLocation: function(inputLocation) {
-      axios.get("/locations/" + inputLocation.id + "/edit").then(function(response) {
-        router.push("/locations");
-      }.bind(this));
+      var params = {
+        location_id: inputLocation.id
+      };
+        router.push("/locations/" + inputLocation.id + "/edit");
     }
   },
 };
@@ -152,27 +186,36 @@ var NewLocation = {
 // ===================================
 
 var UpdateLocation = {
-  template: "#edit-location",
+  template: "#update-location",
   data: function() {
     return {
       location: {
-        streetAddress: "",
-        city: "",
-        state: "",
-        zip: ""
+
       }
     };
   },
+  created: function() {
+    axios.get("/locations/" + this.$route.params.id + "edit").then(function(response) {
+      // this.location = response.body;
+
+    // +++++++++++++++++++++++++++++++++++
+    // THIS IS BROKEN
+    // +++++++++++++++++++++++++++++++++++
+    
+      console.log(response.body);
+      console.log(this.$route.params.id);
+    }.bind(this));
+  },
   methods: {
-    updateLocation: function(inputLocation) {
-      // var params = {
-      //   street_address: this.location.streetAddress,
-      //   city: this.location.city,
-      //   state: this.location.state,
-      //   zip: this.location.zip
-      // };
-      axios.get("/locations/" + inputLocation.id + "/edit").then(function(response) {
-        router.push("/locations" + inputLocation.id + "/edit");
+    updateLocation: function() {
+      var params = {
+        street_address: this.location.streetAddress,
+        city: this.location.city,
+        state: this.location.state,
+        zip: this.location.zip
+      };
+      axios.patch("/locations/" + this.$route.params.id, params).then(function(response) {
+        router.push("/locations");
       }.bind(this));
     }
   }
@@ -208,10 +251,6 @@ var UserActions = {
 
   }
 };
-
-// ===================================
-// COMPONENTS SECTION
-// ===================================
 
 
 // ===================================
@@ -269,18 +308,21 @@ var Login = {
       var params = {
         auth: { email: this.email, password: this.password }
       };
-      axios.post("/user_token", params)
+      axios
+        .post("/user_token", params)
         .then(function(response) {
           axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
-          router.push("/");
+          router.push("/dashboard");
         })
-        .catch(function(error) {
-          console.log(error.response.data.errors);
-          this.errors = ["Invalid email or password."];
-          this.email = "";
-          this.password = "";
-        }.bind(this));
+        .catch(
+          function(error) {
+            this.errors = ["Invalid email or password."];
+            this.email = "";
+            this.password = "";
+          }.bind(this)
+        );
+
     }
   },
 };
@@ -309,6 +351,7 @@ var router = new VueRouter({
     { path: "/signup", component: SignUp },
     { path: "/login", component: Login },
     { path: "/logout", component: Logout },
+    { path: "/dashboard", component: Dashboard },
     { path: "/locations", component: Locations},
     { path: "/locations/:id/edit", component: UpdateLocation},
     { path: "/locations/new", component: NewLocation}

@@ -27,17 +27,16 @@ class LocationsController < ApplicationController
   end
 
   def show
-    address_id = params[:id]
-    location = Location.find_by(id: params[:location_id])
+    location = Location.find_by(id: params[:id])
     render json: location.as_json
   end
   
   def edit
-
+    location = Location.find_by(params[:id])
   end
   
   def update
-    location = Location.find_by(id: params[:location_id])
+    location = Location.find_by(id: params[:id])
     location.update(
       street_address: params[:street_address],
       city: params[:city],

@@ -21,12 +21,8 @@
 
 <body>
   <div id="vue-app">
-    <a href="/#/signup">Sign Up</a>
-    <a href="/#/login">Login</a>
-    <a href="/#/logout">Logout</a>
-    <a href="/#/locations">Locations</a>
-    <a href="/#/locations/new">Add a Location</a>
-    <a href="/#/places">Places</a>
+    
+    
     <router-view></router-view>
   </div>
 </body>
@@ -36,13 +32,37 @@
 <!-- END HTML, BEGIN TEMPLATES -->
 <!--===========================-->
 
+<!--===========================-->
+<!-- HOMEPAGE -->
+<!--===========================-->
+
 <template id="home-page">
   <div class="vue-component">
-    <!-- PRINT USERS -->
-    <div v-for="user in users">
-      <p>Name : {{user.first_name}} {{user.last_name}}</p>
-      <p>Points: {{user.points}}</p>
-      <p>Email: {{user.email}}</p>
+    <a href="/#/signup">Sign Up</a>
+    <a href="/#/login">Login</a>
+    <div>
+      <p>{{message}}</p>
+      <hr>
+    </div>
+
+  </div>
+</template>
+
+<!--===========================-->
+<!-- DASHBOARD -->
+<!--===========================-->
+
+<template id="dashboard">
+  <div class="vue-component">
+    
+    <!-- NAV -->
+      <a href="/#/logout">Logout</a>
+      <a href="/#/locations">Locations</a>
+      <a href="/#/locations/new">Add a Location</a>
+      <a href="/#/places">Places</a>
+
+    <div>
+      <p>{{message}}</p>
       <hr>
     </div>
 
@@ -119,7 +139,14 @@
 
 <template id="places">
     <div id="vue-component">
-      <!-- PRINT PLACES -->
+      
+    <!-- NAV -->
+      <a href="/#/logout">Logout</a>
+      <a href="/#/locations">Locations</a>
+      <a href="/#/locations/new">Add a Location</a>
+      <a href="/#/places">Places</a>
+      
+    <!-- PRINT PLACES -->
       <div v-for="place in places">
         <p>Name: {{place.name}}</p>
         <p>Address: {{place.formatted_address}}</p>
@@ -135,7 +162,8 @@
 
 <template id="useractions">
     <div id="vue-component">
-      <!-- PRINT PLACES -->
+      
+    <!-- PRINT PLACES -->
       <div v-for="action in useractions">
         <p>Name: {{place.name}}</p>
         <p>Address: {{place.formatted_address}}</p>
@@ -145,23 +173,6 @@
     </div>
 </template>
 
-<!--===========================-->
-<!-- LOCATIONS -->
-<!--===========================-->
-
-<template id="locations">
-  <div id="vue-component">
-    <div v-for="location in locations">
-      <p>Street Address: {{location.street_address}}</p>
-      <p>City: {{location.city}}</p>
-      <p>State: {{location.state}}</p>
-      <p>Zip: {{location.zip}}</p>
-      <button v-on:click="editLocation(location)">Edit this location</button>
-      <button v-on:click="deleteLocation(location)">Delete this location</button>
-      <p style="border-bottom: 2px solid grey"></p>
-    </div>
-  </div>
-</template>
 
 <!-- =========================== -->
 <!-- CREATE LOCATION -->
@@ -169,6 +180,13 @@
 
 <template id="new-location">
   <div class="vue-component">
+    
+    <!-- NAV -->
+      <a href="/#/logout">Logout</a>
+      <a href="/#/locations">Locations</a>
+      <a href="/#/locations/new">Add a Location</a>
+      <a href="/#/places">Places</a>
+
     <div class="container">
       <h1>Create New Location</h1>
       <div class="form-group">
@@ -192,18 +210,49 @@
   </div>
 </template>
 
+<!--===========================-->
+<!-- LOCATIONS -->
+<!--===========================-->
+
+<template id="locations">
+  <div id="vue-component">
+
+    <!-- NAV -->
+      <a href="/#/logout">Logout</a>
+      <a href="/#/locations">Locations</a>
+      <a href="/#/locations/new">Add a Location</a>
+      <a href="/#/places">Places</a>
+
+    <div v-for="location in locations">
+      <p>Street Address: {{location.street_address}}</p>
+      <p>City: {{location.city}}</p>
+      <p>State: {{location.state}}</p>
+      <p>Zip: {{location.zip}}</p>
+      <button v-on:click="editLocation(location)">Edit this location</button>
+      <button v-on:click="deleteLocation(location)">Delete this location</button>
+      <p style="border-bottom: 2px solid grey"></p>
+    </div>
+  </div>
+</template>
+
 <!-- =========================== -->
-<!-- EDIT LOCATION -->
+<!-- UPDATE LOCATION -->
 <!-- =========================== -->
 
-<template id="edit-location">
+<template id="update-location">
   <div class="vue-component">
+    
+  <!-- NAV -->
+    <a href="/#/logout">Logout</a>
+    <a href="/#/locations">Locations</a>
+    <a href="/#/locations/new">Add a Location</a>
+    <a href="/#/places">Places</a>
 
     <div class="container">
-      <h1>Edit Location</h1>
+      <!-- <h1>Edit Location</h1>
       <div class="form-group">
         <label>Street Address:</label> 
-        <input type="text" class="form-control" v-model="location.streetAddress">
+        <input type="text" class="form-control" v-model="location.streetAddress" :placeholder="location.streetAddress">
       </div>
       <div class="form-group">
         <label>City:</label>
@@ -219,7 +268,7 @@
         "form-control" v-model="location.zip">
       </div>
       <button class="btn btn-primary" v-on:click="updateLocation()">Submit</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
