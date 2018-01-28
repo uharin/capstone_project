@@ -1,9 +1,4 @@
-/* global Vue, VueRouter, axios */
-
-
-// ===================================
-// COMPONENTS SECTION
-// ===================================
+/* global Vue, VueRouter, axios, google */
 
 // ===================================
 // HOMEPAGE
@@ -15,102 +10,34 @@ var HomePage = {
     return {
       message: 
         "Welcome to Wurld!"
-      // users: [],
-      // places: [],
-      // first_name: "",
-      // last_name: "",
-      // points: "",
-      // email: "", 
-      // name: "",
-      // address: "",
-      // icon: ""
     };
-  },
-
-  created: function() {
-  
-  // THIS CODE WORKS TO GRAB DATA FROM USERS
-
-    // axios.get('/users').then(function(response) {
-    //   console.log(response.data);
-    //   this.users = response.data;
-    // }.bind(this));
-    
-  // THIS CODE WORKS TO GRAB DATA FROM GMAPS
-  
-  //   axios.get('/places').then(function(response) {
-  //     console.log(response.data);
-  //     this.places = response.data;
-  //   }.bind(this));
-  },
-
-  methods: {
-
-  },
-
-  computed: {
-
   }
 };
 
 // ===================================
-// HOMEPAGE
+// DASHBOARD
 // ===================================
 
 var Dashboard = {
   template: "#dashboard",
   data: function() {
     return {
-      message: 
-        "This is the dashboard!"
-      
-    };
-  },
-
-  created: function() {
-  
-  },
-  methods: {
-
-  },
-
-  computed: {
-
-  }
-};
-
-// ===================================
-// PLACES
-// ===================================
-
-var Places = {
-  template: "#places",
-  data: function() {
-    return {
+      message: "This is the dashboard!",
       places: [],
       name: "",
       formatted_address: "",
-      icon: ""
+      icon: "",
+      userMap: null
     };
-  },
-
-  created: function() {
-    
-  // THIS CODE WORKS TO GRAB DATA FROM GMAPS
-  
-    axios.get('/places').then(function(response) {
-      console.log(response.data);
-      this.places = response.data;
-    }.bind(this));
-  },
-
-  methods: {
-
-  },
-
-  computed: {
-
   }
+
+  // created: function() {
+  // // THIS CODE WORKS TO GRAB DATA FROM GMAPS
+  //   axios.get('/places').then(function(response) {
+  //     console.log(response.data);
+  //     this.places = response.data;
+  //   }.bind(this));
+  // }
 };
 
 // ===================================
@@ -121,7 +48,8 @@ var Locations = {
   template: "#locations",
   data: function() {
     return {
-      locations: []
+      locations: [],
+      isDefault: true
     };
   },
   created: function() {
@@ -144,7 +72,15 @@ var Locations = {
       var params = {
         location_id: inputLocation.id
       };
-        router.push("/locations/" + inputLocation.id + "/edit");
+      router.push("/locations/" + inputLocation.id + "/edit");
+    },
+    setDefault: function(inputLocation) {
+      var params = {
+        location_id: inputLocation.id
+      };
+      axios.patch("/locations/" + inputLocation.id).then(function(response) {
+        router.push('dashboard');
+      }.bind(this));
     }
   },
 };
@@ -158,12 +94,8 @@ var NewLocation = {
   data: function() {
     return {
       location: {
-        streetAddress: "",
-        city: "",
-        state: "",
-        zip: ""
+        defaultLocation: false
       }
-      
     };
   },
   methods: {
@@ -172,7 +104,8 @@ var NewLocation = {
         street_address: this.location.streetAddress,
         city: this.location.city,
         state: this.location.state,
-        zip: this.location.zip
+        zip: this.location.zip,
+        is_default: this.location.defaultLocation
       };
       axios.post("/locations", params).then(function(response) {
         router.push("/locations");
@@ -346,7 +279,6 @@ var Logout = {
 var router = new VueRouter({
   routes: [
     { path: "/", component: HomePage },
-    { path: "/places", component: Places },
     { path: "/useractions", component: UserActions },
     { path: "/signup", component: SignUp },
     { path: "/login", component: Login },
@@ -376,5 +308,4 @@ var app = new Vue({
       axios.defaults.headers.common["Authorization"] = jwt;
     }
   }
-
 });

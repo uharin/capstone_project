@@ -12,8 +12,10 @@ Rails.application.routes.draw do
   post '/locations' => 'locations#create'
   get '/locations/:id' => 'locations#show'
   get '/locations/:id/edit' => 'locations#edit'
-  patch '/locations' => 'locations#update'
+  patch '/locations/:id' => 'locations#update'
   delete '/locations/:id' => 'locations#destroy'  
+
+
 
   get '/posts' => 'posts#index'
   post '/posts' => 'posts#create'
