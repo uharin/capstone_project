@@ -4,26 +4,26 @@
 # Create Posts
 # ========================
 
-Post.create!({user_id: 1, board_thread_id: 2})
-Post.create!({user_id: 2, board_thread_id: 4})
-Post.create!({user_id: 3, board_thread_id: 2})
-Post.create!({user_id: 3, board_thread_id: 3})
-Post.create!({user_id: 2, board_thread_id: 4})
-Post.create!({user_id: 1, board_thread_id: 5})
+# Post.create!({user_id: 1, board_thread_id: 2})
+# Post.create!({user_id: 2, board_thread_id: 4})
+# Post.create!({user_id: 3, board_thread_id: 2})
+# Post.create!({user_id: 3, board_thread_id: 3})
+# Post.create!({user_id: 2, board_thread_id: 4})
+# Post.create!({user_id: 1, board_thread_id: 5})
 
 # ========================
 # Create User_Actions
 # ========================
 
-# UserAction.create({user_id: 1, action_id: 1})
-# UserAction.create({user_id: 2, action_id: 3})
-# UserAction.create({user_id: 2, action_id: 4})
-# UserAction.create({user_id: 1, action_id: 2})
-# UserAction.create({user_id: 1, action_id: 1})
-# UserAction.create({user_id: 3, action_id: 3})
-# UserAction.create({user_id: 3, action_id: 4})
-# UserAction.create({user_id: 3, action_id: 1})
-# UserAction.create({user_id: 1, action_id: 3})
+UserAction.create({user_id: 9, action_id: 1})
+UserAction.create({user_id: 9, action_id: 3})
+UserAction.create({user_id: 9, action_id: 4})
+UserAction.create({user_id: 9, action_id: 2})
+UserAction.create({user_id: 9, action_id: 1})
+UserAction.create({user_id: 3, action_id: 3})
+UserAction.create({user_id: 3, action_id: 4})
+UserAction.create({user_id: 10, action_id: 1})
+UserAction.create({user_id: 8, action_id: 3})
 
 # ========================
 # Create Board_Threads

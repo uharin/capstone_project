@@ -68,12 +68,14 @@ var Locations = {
         router.push('/locations');
       }.bind(this));
     },
+
     editLocation: function(inputLocation) {
       var params = {
         location_id: inputLocation.id
       };
       router.push("/locations/" + inputLocation.id + "/edit");
     },
+
     setDefault: function(inputLocation) {
       var params = {
         location_id: inputLocation.id
@@ -107,8 +109,8 @@ var NewLocation = {
         zip: this.location.zip,
         is_default: this.location.defaultLocation
       };
-      axios.post("/locations", params).then(function(response) {
-        router.push("/locations");
+      axios.post("/user_actions", params).then(function(response) {
+        router.push("/useractions");
       }.bind(this));
     }
   }
@@ -162,17 +164,101 @@ var UserActions = {
   template: "#useractions",
   data: function() {
     return {
-      
+      userActions: []
     };
   },
 
   created: function() {
-    
-  // THIS CODE WORKS TO GRAB DATA FROM GMAPS
   
-    axios.get('/places').then(function(response) {
+    axios.get('/user_actions').then(function(response) {
       console.log(response.data);
-      this.places = response.data;
+      this.userActions = response.data;
+    }.bind(this));
+  },
+
+  methods: {
+  },
+
+  computed: {
+
+  }
+};
+
+// ===================================
+// ADD USERACTION
+// ===================================
+
+var NewUserAction = {
+  template: "#new-useraction",
+  data: function() {
+    return {
+      actionOption: true,
+      amount: "",
+    };
+  },
+  methods: {
+    createUserAction: function() {
+      var params = {
+        action_id: this.actionOption,
+        amount: this.amount
+      };
+      axios.post("/user_actions", params).then(function(response) {
+        router.push("/useractions");
+      }.bind(this));
+    }
+  }
+};
+
+// ===================================
+// MESSAGE BOARD
+// ===================================
+
+var MessageBoard = {
+  template: "#message-board",
+  data: function() {
+    return {
+      boardThreads: []
+    };
+  },
+
+  created: function() {
+  
+    axios.get('/threads').then(function(response) {
+      console.log(response.data);
+      this.boardThreads = response.data;
+    }.bind(this));
+  },
+
+  methods: {
+    readMore: function(inputBoardThread) {
+      var params = {
+        board_thread_id: inputBoardThread.id
+      };
+      router.push('/threads/' + inputBoardThread.id);
+    }
+  },
+
+  computed: {
+
+  }
+};
+
+// ===================================
+// SHOW THREAD
+// ===================================
+
+var ShowThread = {
+  template: "#show-thread",
+  data: function() {
+    return {
+      posts: []
+    };
+  },
+
+  created: function() {
+    axios.get("/threads", params).then(function(response) {
+      console.log(response.data);
+      this.userActions = response.data;
     }.bind(this));
   },
 
@@ -184,7 +270,6 @@ var UserActions = {
 
   }
 };
-
 
 // ===================================
 // SIGNUP
@@ -279,14 +364,17 @@ var Logout = {
 var router = new VueRouter({
   routes: [
     { path: "/", component: HomePage },
-    { path: "/useractions", component: UserActions },
     { path: "/signup", component: SignUp },
     { path: "/login", component: Login },
     { path: "/logout", component: Logout },
     { path: "/dashboard", component: Dashboard },
+    { path: "/useractions", component: UserActions },
+    { path: "/useractions/new", component: NewUserAction },
     { path: "/locations", component: Locations},
     { path: "/locations/:id/edit", component: UpdateLocation},
-    { path: "/locations/new", component: NewLocation}
+    { path: "/locations/new", component: NewLocation},
+    { path: "/messageboard", component: MessageBoard},
+    { path: "/messageboard/:id", component: ShowThread},
   ],
   scrollBehavior: function(to, from, savedPosition) {
     return { x: 0, y: 0 };
