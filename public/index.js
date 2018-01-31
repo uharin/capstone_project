@@ -109,8 +109,8 @@ var NewLocation = {
         zip: this.location.zip,
         is_default: this.location.defaultLocation
       };
-      axios.post("/user_actions", params).then(function(response) {
-        router.push("/useractions");
+      axios.post("/locations", params).then(function(response) {
+        router.push("/locations");
       }.bind(this));
     }
   }
@@ -217,7 +217,11 @@ var MessageBoard = {
   template: "#message-board",
   data: function() {
     return {
-      boardThreads: []
+      boardThreads: [],
+      showNewThread: false,
+      thread: {},
+      sortAttribute: "created_at",
+      sortDesc: true
     };
   },
 
@@ -234,12 +238,39 @@ var MessageBoard = {
       var params = {
         board_thread_id: inputBoardThread.id
       };
-      router.push('/threads/' + inputBoardThread.id);
+      router.push('/messageboard/' + inputBoardThread.id);
+    },
+
+    createThread: function() {
+      var params = {
+        title: this.thread.title,
+        post_text: this.thread.postText
+      };
+      axios.post("/threads", params).then(function(response) {
+        this.boardThreads.push(this.thread);
+        // router.push("/messageboard");
+      }.bind(this));
+      axios.get('/threads').then(function(response) {
+        console.log(response.data);
+        this.boardThreads = response.data;
+        this.showNewThread = false;
+      }.bind(this));
+      
     }
   },
 
   computed: {
-
+    sortedThreads: function() {
+      if (this.sortDesc) {
+        return this.boardThreads.sort(function(thread1, thread2) {
+          return thread1[this.sortAttribute].localeCompare(thread2[this.sortAttribute]);
+        }.bind(this));
+      } else {
+        return this.boardThreads.sort(function(thread1, thread2) {
+          return thread2[this.sortAttribute].localeCompare(thread1[this.sortAttribute]);
+        }.bind(this));
+      }
+    }
   }
 };
 
@@ -251,19 +282,30 @@ var ShowThread = {
   template: "#show-thread",
   data: function() {
     return {
-      posts: []
+      posts: [],
+      postText: ""
     };
   },
 
   created: function() {
-    axios.get("/threads", params).then(function(response) {
+    var params = {
+      thread_id: this.$route.params
+    };
+    axios.get("/posts", params).then(function(response) {
       console.log(response.data);
-      this.userActions = response.data;
+      console.log(params);
+      this.posts = response.data;
     }.bind(this));
   },
 
   methods: {
-
+    createPost: function() {
+      var params = {
+        post_text: this.postText
+      };
+      axios.post("/posts", params).then(function(response) {
+      }.bind(this));
+    }
   },
 
   computed: {
@@ -284,7 +326,6 @@ var SignUp = {
       email: "",
       password: "",
       passwordConfirmation: "",
-      zip: "",
       errors: []
     };
   },

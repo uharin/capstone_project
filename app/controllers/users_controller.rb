@@ -15,15 +15,8 @@ class UsersController < ApplicationController
       password: params[:password],
       password_confirmation: params[:password_confirmation]
       )
-    if user.save
-      Location.create({
-        user_id: user.id,
-        zip: params[:zip]
-        })
-      render json: user.as_json
-    else
-      render json: user.errors.full_messages
-    end
+    user.save
+    render json: user.as_json
   end
 
   def destroy
