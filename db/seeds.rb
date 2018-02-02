@@ -52,18 +52,18 @@
 # Create Board_Threads
 # ========================
 
-BoardThread.create!({user_id: 1, title:"Lorem ipsum dolor amet jean shorts air plant narwhal authentic"})
-BoardThread.create!({user_id: 1, title:"YOLO taiyaki master cleanse celiac"})
-BoardThread.create!({user_id: 1, title:"pressed af +1 freegan affogato raclette"})
-BoardThread.create!({user_id: 1, title:"lyft church-key adaptogen "})
-BoardThread.create!({user_id: 1, title:"Small batch vegan iPhone enamel pin. Tilde shaman pabst pitchfork."})
-BoardThread.create!({user_id: 1, title:"Skateboard kogi iPhone try-hard forage"})
-BoardThread.create!({user_id: 1, title:"santo drinking vinegar gluten-free. Kogi taxidermy"})
-BoardThread.create!({user_id: 1, title:"YOLO taiyaki master cleanse celiac"})
-BoardThread.create!({user_id: 1, title:"Twee kitsch readymade"})
-BoardThread.create!({user_id: 1, title:"Organic vaporware semiotics vegan"})
-BoardThread.create!({user_id: 1, title:"Small batch vegan iPhone enamel pin. Tilde shaman pabst pitchfork."})
-BoardThread.create!({user_id: 1, title:"Svinyl pinterest tacos "})
+# BoardThread.create!({user_id: 1, title:"Lorem ipsum dolor amet jean shorts air plant narwhal authentic"})
+# BoardThread.create!({user_id: 1, title:"YOLO taiyaki master cleanse celiac"})
+# BoardThread.create!({user_id: 1, title:"pressed af +1 freegan affogato raclette"})
+# BoardThread.create!({user_id: 1, title:"lyft church-key adaptogen "})
+# BoardThread.create!({user_id: 1, title:"Small batch vegan iPhone enamel pin. Tilde shaman pabst pitchfork."})
+# BoardThread.create!({user_id: 1, title:"Skateboard kogi iPhone try-hard forage"})
+# BoardThread.create!({user_id: 1, title:"santo drinking vinegar gluten-free. Kogi taxidermy"})
+# BoardThread.create!({user_id: 1, title:"YOLO taiyaki master cleanse celiac"})
+# BoardThread.create!({user_id: 1, title:"Twee kitsch readymade"})
+# BoardThread.create!({user_id: 1, title:"Organic vaporware semiotics vegan"})
+# BoardThread.create!({user_id: 1, title:"Small batch vegan iPhone enamel pin. Tilde shaman pabst pitchfork."})
+# BoardThread.create!({user_id: 1, title:"Svinyl pinterest tacos "})
 
 # ========================
 # Create Actions
@@ -81,10 +81,10 @@ BoardThread.create!({user_id: 1, title:"Svinyl pinterest tacos "})
 
 #
 # 100.times do
-#   Location.create!({
-#   street_address: Faker::Address.street_address, 
-#   city: Faker::Address.city, 
-#   state: Faker::Address.state_abbr, 
-#   zip: Faker::Address.zip,
-#   user_id: 1})
+  Location.create!({
+  street_address: Faker::Address.street_address, 
+  city: Faker::Address.city, 
+  state: Faker::Address.state_abbr, 
+  zip: Faker::Address.zip,
+  user_id: 1})
 # end

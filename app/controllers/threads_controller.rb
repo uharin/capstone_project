@@ -55,8 +55,7 @@ class ThreadsController < ApplicationController
   end
 
   def destroy
-    thread_id = params[:id]
-    thread = BoardThread.find_by(id: thread_id)
+    thread = BoardThread.find_by(id: params[:id])
     thread.destroy
   end
 

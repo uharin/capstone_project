@@ -39,9 +39,7 @@ class LocationsController < ApplicationController
   def show
     p "I am in the show"
     if params[:id] == "get-my-location"
-      location = Location.find_by(is_default: true 
-        # user_id: current_user.id
-        )
+      location = Location.find_by(is_default: true)
       p "location is the following:"
       p location
     end

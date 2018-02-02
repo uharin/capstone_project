@@ -12,13 +12,16 @@ class UserActionsController < ApplicationController
       action_id: params[:action_id],
       amount: params[:amount]
       })
+
+    if user_action.save
+    
+    # add user_action points to current user's total points
+      user = current_user
+      current_user.points += (params[:amount].to_i * user_action.action.point_value)
+      user.update(points: current_user.points)
+  
+    end
     render json: user_action.as_json
   end
 
 end
-    # actions = {1 => 50, 2 => 200,3 =>100,4 =>150}
-    # sum = 0
-    # user_actions.each do |user_action|
-    #   sum += user_action.amount * actions[user_action.action_id]
-    # end
-    # p sum

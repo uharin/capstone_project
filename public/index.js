@@ -1,4 +1,4 @@
-/* global Vue, VueRouter, axios, google */
+/* global Vue, VueRouter, axios, google $ Highcharts */
 
 // ===================================
 // HOMEPAGE
@@ -22,22 +22,91 @@ var Dashboard = {
   template: "#dashboard",
   data: function() {
     return {
-      message: "This is the dashboard!",
+      message: "Welcome to WURLD!",
       places: [],
-      name: "",
-      formatted_address: "",
-      icon: "",
+      user: {
+        name: "",
+        points: "",
+        local_users: [],
+        city: "",
+        state: ""
+      },
       userMap: null
     };
-  }
+  },
 
-  // created: function() {
-  // // THIS CODE WORKS TO GRAB DATA FROM GMAPS
-  //   axios.get('/places').then(function(response) {
-  //     console.log(response.data);
-  //     this.places = response.data;
-  //   }.bind(this));
-  // }
+  mounted: function() {
+
+    axios.get('/users/:id').then(function(response) {
+      console.log(response.data);
+      this.user = response.data;
+      console.log(this.user);
+      
+      var myChart = Highcharts.chart('map-container', {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Leaderboard'
+        },
+        xAxis: {
+          categories: ['Users']
+        },
+        yAxis: {
+          title: {
+            text: 'Points'
+          }
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 8,
+            groupPadding: 0,
+            shadow: true
+          }
+        },   
+        series: [{  
+          name: this.user.name,
+          data: [this.user.points]
+        }, 
+        {
+          name: this.user.local_users[1].first_name + " " + this.user.local_users[1].last_name,
+          data: [this.user.local_users[1].points]
+        }]
+      });
+    }.bind(this));
+      
+    
+
+    // MAPS
+    // ============================================
+
+    axios.get('/places').then(function(response) {
+      this.places = response.data;
+      console.log(this.places);
+    });
+
+    var initMap = function() {
+      console.log("Init map function");
+      var uluru = {lat: -25.363, lng: 131.044};
+      var map = new google.maps.Map(document.getElementById('userMap'), {
+        zoom: 4,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    };
+    
+    // Use JQuery to wait until document loads, then run initMap()
+    // ==============================
+    
+    $(document).ready(function() {
+      initMap();
+      console.log("ready!");
+    });
+  },
 };
 
 // ===================================
@@ -221,7 +290,8 @@ var MessageBoard = {
       showNewThread: false,
       thread: {},
       sortAttribute: "created_at",
-      sortDesc: true
+      sortDesc: true,
+      current_user: ""
     };
   },
 
@@ -230,6 +300,12 @@ var MessageBoard = {
     axios.get('/threads').then(function(response) {
       console.log(response.data);
       this.boardThreads = response.data;
+      this.boardThreads.reverse();
+    }.bind(this));
+
+    axios.get('/users/:id').then(function(response) {
+      console.log(response.data);
+      this.current_user = response.data;
     }.bind(this));
   },
 
@@ -253,24 +329,38 @@ var MessageBoard = {
       axios.get('/threads').then(function(response) {
         console.log(response.data);
         this.boardThreads = response.data;
+        this.boardThreads.reverse();
         this.showNewThread = false;
+      }.bind(this)); 
+    },
+
+    deleteThread: function(inputThread) {
+      var params = {
+        thread_id: inputThread.id
+      };
+      axios.delete('/threads/' + inputThread.id).then(function(response) {
+        this.boardThreads.splice(this.boardThreads.indexOf(inputThread), 1);
+        router.push('/messageboard');
       }.bind(this));
-      
-    }
+    },
   },
 
   computed: {
-    sortedThreads: function() {
-      if (this.sortDesc) {
-        return this.boardThreads.sort(function(thread1, thread2) {
-          return thread1[this.sortAttribute].localeCompare(thread2[this.sortAttribute]);
-        }.bind(this));
-      } else {
-        return this.boardThreads.sort(function(thread1, thread2) {
-          return thread2[this.sortAttribute].localeCompare(thread1[this.sortAttribute]);
-        }.bind(this));
-      }
-    }
+
+    // checkAuthor: function(inputBoardThread) {
+    //   if this.inputBoardThread.created_by
+    // }
+    // sortedThreads: function() {
+    //   if (this.sortDesc) {
+    //     return this.boardThreads.sort(function(thread1, thread2) {
+    //       return thread1[this.sortAttribute].localeCompare(thread2[this.sortAttribute]);
+    //     }.bind(this));
+    //   } else {
+    //     return this.boardThreads.sort(function(thread1, thread2) {
+    //       return thread2[this.sortAttribute].localeCompare(thread1[this.sortAttribute]);
+    //     }.bind(this));
+  //     }
+  //   }
   }
 };
 

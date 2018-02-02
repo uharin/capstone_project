@@ -12,13 +12,4 @@ class Location < ApplicationRecord
     self.is_default = !self.is_default
   end
 
-  # def find_default
-  #   default_location = current_user.locations.find_by(default: true)
-  #   render json: default_location.as_json
-  # end
-
-  # def change_default
-
-  # end
-
 end

@@ -25,6 +25,13 @@
     <link href="premium/icon-sets/icons/line-icons/premium-line-icons.min.css" rel="stylesheet">
     <link href="premium/icon-sets/icons/solid-icons/premium-solid-icons.min.css" rel="stylesheet">
 
+    <style>
+       #userMap {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+
     <!--=================================================-->
 
     <!--Page Load Progress Bar [ OPTIONAL ]-->
@@ -35,10 +42,23 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+    
+    <!-- GOOGLE MAPS -->
+    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-7qIRZu5xUOMm9uU4fihfKSr7ZvHVfc">
+    </script>
 
     <!-- ALEX JS -->
+    
     <script src="index.js" defer></script>
-            
+
+
     <!--=================================================
 
     REQUIRED
@@ -473,7 +493,7 @@
     
     <!--Nifty Admin [ RECOMMENDED ]-->
     <script src="js/nifty.min.js"></script>
-
+    
 </body>
 </html>
 
@@ -567,13 +587,12 @@
     
     <div>
       <p>{{message}}</p>
-      <h3>My Google Maps Demo</h3>
+      <h3>{{user.name}}'s Dashboard</h3>
+      <p>Points: {{user.points}}</p>
+      <p>Default Location: {{user.city}}, {{user.state}}</p>
       <div id="userMap"></div>
-      <div v-for="place in places">
-        <p>Name: {{place.name}}</p>
-        <p>Address: {{place.formatted_address}}</p>
-        <p>Icon: {{place.icon}}</p>
-        <hr>
+      <div id="map-container" style="width:100%; height:400px;">
+          
       </div>
       <hr>
     </div>
@@ -684,53 +703,12 @@
       <p>City: {{location.city}}</p>
       <p>State: {{location.state}}</p>
       <p>Zip: {{location.zip}}</p>
-      <button class="btn-sm btn-primary" v-on:click="editLocation(location)">Edit this location</button>
-      <button class="btn-sm btn-warning" v-on:click="setDefault(location)" v-if="location.is_default === false">Set As Default</button>
+      <button class="btn-sm btn-primary" v-on:click="setDefault(location)" v-if="location.is_default === false">Set As Default</button>
       <button class="btn-sm btn-danger" v-on:click="deleteLocation(location)">Delete this location</button>
       <p style="border-bottom: 2px solid grey"></p>
     </div>
   </div>
 </template>
-
-<!-- =========================== -->
-<!-- UPDATE LOCATION -->
-<!-- =========================== -->
-
-<!-- <template id="update-location">
-  <div class="vue-component"> -->
-    
-  <!-- NAV -->
-    <!-- <a href="/#/locations">Locations</a>
-      <a href="/#/locations/new">Add a Location</a>
-      <a href="/#/places">Places</a>
-      <a href="/#/dashboard">Dashboard</a>
-      <a href="/#/logout">Logout</a>
-
-    <div class="container"> -->
-
-
-      <!-- <h1>Edit Location</h1>
-      <div class="form-group">
-        <label>Street Address:</label> 
-        <input type="text" class="form-control" v-model="location.streetAddress" :placeholder="location.streetAddress">
-      </div>
-      <div class="form-group">
-        <label>City:</label>
-        <input type="text" class="form-control" v-model="location.city">
-      </div>
-      <div class="form-group">
-        <label>State:</label>
-        <input type="text" class="form-control" v-model="location.state">
-      </div>
-      <div class="form-group">
-        <label>Zip:</label>
-        <input type="text" class=
-        "form-control" v-model="location.zip">
-      </div>
-      <button class="btn btn-primary" v-on:click="updateLocation()">Submit</button>
-    </div> -->
-  <!-- </div>
-</template> -->
 
 <!--===========================-->
 <!-- USERACTIONS -->
@@ -798,7 +776,7 @@
 
       <h1>Message Board</h1>
     <!-- Create New Thread -->
-      <a href="#" v-on:click="showNewThread=true">Create Thread</a>
+      <button class="btn-md" v-show="!showNewThread" v-on:click="showNewThread=true">New Thread</button>
       <div class="form-group" v-show="showNewThread">
         <label>Title:</label>
         <input type="text" class="form-control" v-model="thread.title">
@@ -818,6 +796,7 @@
             <p class="card-text">Posted by: {{boardThread.posted_by}}</p>
             <p class="card-text">Post created: {{boardThread.created_at}}</p>
             <button class="btn-sm btn-primary" v-on:click="readMore(boardThread)">Read More</button>
+            <button class="btn-sm btn-danger" v-if="boardThread.posted_by === current_user.name" v-on:click="deleteThread(boardThread)">Delete Thread</button>
           </div>
         </div>
       </div>
