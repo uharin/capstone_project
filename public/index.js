@@ -38,10 +38,18 @@ var Dashboard = {
   mounted: function() {
 
     axios.get('/users/:id').then(function(response) {
-      console.log(response.data);
       this.user = response.data;
-      console.log(this.user);
+      var loggedUser = this. user;
+      var localUsers = this.user.local_users;
+      console.log("Local users are");
+      console.log(localUsers);
       
+      // maybe come back to this to reduce code 
+      // var mappedPoints = [];
+      // for (var i = 0; i < 10; i++) {
+      //   mappedPoints.push([localUsers[i].name][localUsers[i].points]);
+      // }
+
       var myChart = Highcharts.chart('map-container', {
         chart: {
           type: 'column'
@@ -65,46 +73,91 @@ var Dashboard = {
             shadow: true
           }
         },   
-        series: [{  
-          name: this.user.name,
-          data: [this.user.points]
+        series: [{
+        
+        // maybe come back to this to reduce code 
+        // name: "Local Users",
+        // data: mappedPoints
+
+          name: localUsers[0].name,
+          data: [localUsers[0].points]
+        },
+        {  
+          name: localUsers[1].name,
+          data: [localUsers[1].points]
+        },
+        {  
+          name: localUsers[2].name,
+          data: [localUsers[2].points]
         }, 
-        {
-          name: this.user.local_users[1].first_name + " " + this.user.local_users[1].last_name,
-          data: [this.user.local_users[1].points]
-        }]
+        {  
+          name: localUsers[3].name,
+          data: [localUsers[3].points]
+        }, 
+        {  
+          name: localUsers[4].name,
+          data: [localUsers[4].points]
+        }, 
+        {  
+          name: localUsers[5].name,
+          data: [localUsers[5].points]
+        },  
+        {  
+          name: localUsers[6].name,
+          data: [localUsers[6].points]
+        }, 
+        {  
+          name: localUsers[7].name,
+          data: [localUsers[7].points]
+        },
+        {  
+          name: localUsers[8].name,
+          data: [localUsers[8].points]
+        },
+        {  
+          name: localUsers[9].name,
+          data: [localUsers[9].points]
+        }],    
       });
-    }.bind(this));
+
+      // MAPS
+      // ============================================
+
+      axios.get('/places').then(function(response) {
+        this.places = response.data;
+        var recylingPlaces = this.places;
+        console.log(this.places);
       
-    
 
-    // MAPS
-    // ============================================
+        var initMap = function(user, places) {
+          console.log("Init map function");
+          // console.log(this.user.latitude);
+          var userLocation = {lat: user.latitude, lng: user.longitude};
+          var map = new google.maps.Map(document.getElementById('userMap'), {
+            zoom: 11,
+            center: userLocation
+          });
 
-    axios.get('/places').then(function(response) {
-      this.places = response.data;
-      console.log(this.places);
-    });
+          var gmarkers = [];
 
-    var initMap = function() {
-      console.log("Init map function");
-      var uluru = {lat: -25.363, lng: 131.044};
-      var map = new google.maps.Map(document.getElementById('userMap'), {
-        zoom: 4,
-        center: uluru
-      });
-      var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-      });
-    };
-    
-    // Use JQuery to wait until document loads, then run initMap()
-    // ==============================
-    
-    $(document).ready(function() {
-      initMap();
-      console.log("ready!");
+          for (var i = 0; i < places.length; i++) {
+            var location = places[i].geometry.location;
+            var position = new google.maps.LatLng(location.lat, location.long);
+            var marker = new google.maps.Marker({
+              position: position,
+              map: map,
+              title: places[i].name 
+            });
+            gmarkers.push(marker);
+          }
+        };
+        // Use JQuery to wait until document loads, then run initMap()
+        // ==============================
+        $(document).ready(function() {
+          initMap(loggedUser, recylingPlaces);
+          console.log("ready!");
+        });
+      }.bind(this));
     });
   },
 };

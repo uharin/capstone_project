@@ -26,23 +26,20 @@ class User < ApplicationRecord
   # find all local addresses where city is current_city and default is true. Returns array
     local_addresses = Location.where(city: current_city, is_default: true)
 
+    # create an array and shovel in first name, last name, and points of all local users
     local_users = []
-    
     local_addresses.each do |location|
       user_hash = {}
-      user_hash[:first_name] = location.user.first_name
-
-      user_hash[:last_name] = location.user.last_name
-      p "LOCATION.USER.LAST_NAME"
-      pp location.user.last_name
-
+      user_hash[:name] = location.user.get_name
       user_hash[:points] = location.user.points
-      p "LOCATION.USER.POINTS"
-      pp location.user.points
-
       local_users << user_hash
     end
-      
+    
+    # sort local users in descending order to get top 10
+    sorted_local_users = local_users.sort_by! { |k| k[:points] }.reverse!
+      p "Printing  sorted local users!"
+    p sorted_local_users  
+
     {
       name: get_name,
       email: email,
