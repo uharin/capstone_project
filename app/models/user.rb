@@ -17,6 +17,8 @@ class User < ApplicationRecord
 
   def as_json(input_user)
 
+  # GET LOCAL USERS FOR LEADERBOARD
+  # ========================================
   # find current user default location city and state
     current_city = input_user.locations.find_by(is_default: true).city
     current_state = input_user.locations.find_by(is_default: true).state
@@ -37,9 +39,13 @@ class User < ApplicationRecord
     
     # sort local users in descending order to get top 10
     sorted_local_users = local_users.sort_by! { |k| k[:points] }.reverse!
-      p "Printing  sorted local users!"
-    p sorted_local_users  
 
+    # get last user_action for dashboard
+    last_action = UserAction.last
+
+    # get last user_action for dashboard
+    # last_post = User.all.map { |u| u.posts.last }
+  # =========================================
     {
       name: get_name,
       email: email,
@@ -48,7 +54,9 @@ class User < ApplicationRecord
       city: current_city,
       state: current_state,
       latitude: current_latitude,
-      longitude: current_longitude
+      longitude: current_longitude,
+      last_action: last_action.as_json
+      # last_post: last_post.as_json
     }
   end
     

@@ -13,8 +13,7 @@ class BoardThread < ApplicationRecord
     id: id,
     title: title,
     created_at: convert_time(created_at),
-    posted_by: user.get_name,
-    # text: posts.post_text
+    posted_by: user.get_name
     }
   end
 

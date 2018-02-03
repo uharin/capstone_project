@@ -55,7 +55,7 @@
     </script>
 
     <!-- ALEX JS -->
-    
+
     <script src="index.js" defer></script>
 
 
@@ -783,7 +783,7 @@
         <div class="form-group">
           <label for="comment">Initial Comment:</label>
           <textarea class="form-control" rows="5" id="comment" v-model="thread.postText"></textarea>
-          <button class="btn-sm btn-primary" v-on:click="createThread()">Post Thread</button>
+          <button class="btn-sm btn-primary" v-on:click="createThread()">Create Thread</button>
           <button class="btn-sm btn-danger" v-on:click="showNewThread=false">Cancel</button>
       </div>
       </div>
@@ -812,18 +812,18 @@
 
       <h1>Message Board</h1>
     <!-- PRINT BOARD THREADS -->
-      <div v-for="post in posts">
+      <div v-for="boardPost in boardPosts">
         <div class="card" style="width: 100%; border: solid 1px light-grey; padding: 1em">
           <div class="card-body">
-            <h5 class="card-title">Posted by: {{post.posted_by}}</h5>
-            <p class="card-text">{{post.post_text}}</p>
-            <h6 class="card-text">Posted: {{post.created_at}}</h6>
+            <h5 class="card-title">Posted by: {{boardPost.posted_by}}</h5>
+            <p class="card-text">{{boardPost.post_text}}</p>
+            <h6 class="card-text">Posted: {{boardPost.created_at}}</h6>
           </div>
         </div>
       </div>
       <div class="form-group">
-          <label for="comment">Comment:</label>
-          <textarea class="form-control" rows="5" id="comment" v-model="postText"></textarea>
+        <label for="comment">Comment:</label>
+        <textarea class="form-control" rows="5" id="comment" v-model="newPost.postText"></textarea>
       </div>
         <button class="btn-sm btn-primary" v-on:click="createPost()">Submit Post</button>
     </div>

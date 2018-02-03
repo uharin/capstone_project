@@ -33,11 +33,12 @@ class ThreadsController < ApplicationController
   end
 
   def show
-    p "I am in the show"
-    thread_posts = Posts.all.where(board_thread_id: params[:id])
-    p "thread is the following:"
-    p thread
-    render json: thread_posts.as_json
+    # Show all posts for a specific thread
+    posts = Post.all.where(board_thread_id: params[:id])
+    p "THis is params ID"
+    p params[:id]
+    pp posts
+    render json: posts.as_json
   end
 
   def create

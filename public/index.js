@@ -25,21 +25,24 @@ var Dashboard = {
       message: "Welcome to WURLD!",
       places: [],
       user: {
-        name: "",
-        points: "",
         local_users: [],
-        city: "",
-        state: ""
       },
       userMap: null
     };
   },
 
+  created: function() {
+    // Have to run this so dashboard data is available
+    axios.get('/users/:id').then(function(response) {
+      this.user = response.data;
+    }.bind(this));
+  },
   mounted: function() {
 
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
-      var loggedUser = this. user;
+      console.log(this.user);
+      var loggedUser = this.user;
       var localUsers = this.user.local_users;
       console.log("Local users are");
       console.log(localUsers);
@@ -128,27 +131,44 @@ var Dashboard = {
         var recylingPlaces = this.places;
         console.log(this.places);
       
-
         var initMap = function(user, places) {
+
           console.log("Init map function");
           // console.log(this.user.latitude);
+
+          // create map and center on user lat, lng
           var userLocation = {lat: user.latitude, lng: user.longitude};
           var map = new google.maps.Map(document.getElementById('userMap'), {
-            zoom: 11,
-            center: userLocation
+            zoom: 12,
+            center: userLocation,
+            scrollwheel: false
           });
 
-          var gmarkers = [];
-
+          // loop through places and create new markers for each
+          
+          var icon = {
+            url: "recycling.png", // url
+            scaledSize: new google.maps.Size(30, 30), //  size
+          };
+          
           for (var i = 0; i < places.length; i++) {
             var location = places[i].geometry.location;
-            var position = new google.maps.LatLng(location.lat, location.long);
+            var placeName = places[i].name;
             var marker = new google.maps.Marker({
-              position: position,
+              position: location,
               map: map,
-              title: places[i].name 
+              icon: icon
             });
-            gmarkers.push(marker);
+            marker.info = new google.maps.InfoWindow({
+              content: '<div class="userMap"><h6>' + placeName + '</h6> </div>',
+              disableAutoPan: true
+            });
+            google.maps.event.addListener(marker, 'mouseover', function() {
+              this.info.open(map,this );
+            });
+            google.maps.event.addListener(marker, 'mouseout', function() {
+              this.info.close(map,this );
+            });
           }
         };
         // Use JQuery to wait until document loads, then run initMap()
@@ -291,19 +311,13 @@ var UserActions = {
   },
 
   created: function() {
-  
+
     axios.get('/user_actions').then(function(response) {
       console.log(response.data);
       this.userActions = response.data;
     }.bind(this));
   },
 
-  methods: {
-  },
-
-  computed: {
-
-  }
 };
 
 // ===================================
@@ -377,10 +391,9 @@ var MessageBoard = {
       };
       axios.post("/threads", params).then(function(response) {
         this.boardThreads.push(this.thread);
-        // router.push("/messageboard");
       }.bind(this));
+
       axios.get('/threads').then(function(response) {
-        console.log(response.data);
         this.boardThreads = response.data;
         this.boardThreads.reverse();
         this.showNewThread = false;
@@ -425,40 +438,53 @@ var ShowThread = {
   template: "#show-thread",
   data: function() {
     return {
-      posts: [],
-      postText: ""
+      boardPosts: [],
+      newPost: {}
     };
   },
 
   created: function() {
-    var params = {
-      thread_id: this.$route.params
-    };
-    axios.get("/posts", params).then(function(response) {
+
+    axios.get("/threads/" + this.$route.params.id).then(function(response) {
+      this.boardPosts = response.data;
+    }.bind(this));
+
+    axios.get('/users/:id').then(function(response) {
       console.log(response.data);
-      console.log(params);
-      this.posts = response.data;
+      this.current_user = response.data;
     }.bind(this));
   },
-
+  
   methods: {
+
     createPost: function() {
       var params = {
-        post_text: this.postText
+        post_text: this.newPost.postText,
+        board_thread_id: this.$route.params.id
       };
+
       axios.post("/posts", params).then(function(response) {
+        this.boardPosts.push(this.newPost);
       }.bind(this));
-    }
-  },
+      
+      axios.get('/threads/' + this.$route.params.id).then(function(response) {
+        this.boardPosts = response.data;
+        console.log(this.boardPosts);
+      }.bind(this));
+    },
 
-  computed: {
+    deletePost: function(inputPost) {
+      var params = {
+        post_id: inputPost.id
+      };
+      axios.delete('/posts/' + inputPost.id).then(function(response) {
+        this.boardPosts.splice(this.boardPosts.indexOf(inputPost), 1);
+        router.push('/threads/');
+      }.bind(this));
+    },
 
-  }
+  }, 
 };
-
-// ===================================
-// SIGNUP
-// ===================================
 
 var SignUp = {
   template: "#signup-page",
@@ -555,7 +581,6 @@ var router = new VueRouter({
     { path: "/useractions", component: UserActions },
     { path: "/useractions/new", component: NewUserAction },
     { path: "/locations", component: Locations},
-    { path: "/locations/:id/edit", component: UpdateLocation},
     { path: "/locations/new", component: NewLocation},
     { path: "/messageboard", component: MessageBoard},
     { path: "/messageboard/:id", component: ShowThread},

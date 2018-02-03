@@ -12,7 +12,6 @@ class Post < ApplicationRecord
     post_text: post_text,
     created_at: convert_time(created_at),
     posted_by: user.get_name
-    # text: post.post_text
     }
   end
 
