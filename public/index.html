@@ -558,25 +558,25 @@
   <div class="vue-component">
     
     <div>
-        <h1>Welcome to W<span class="highlight" style="text-decoration: underline">URL</span>D</h1>
-        <h3>{{user.name}}'s Dashboard</h3>
-        
-        <p>Current Location: {{user.city}}, {{user.state}}</p>
-        <div class="boxy-div">
+        <h1 class="margin-bottom">{{user.name}}'s Dashboard</h1>
+        <h4> Current Location: {{user.city}}, {{user.state}}</h4>
+        <p class="margin-bottom">See the map below for a list of places near you that can help you earn points by recycling:</p>
+        <div class="boxy-div margin-bottom">
             <div class= "boxy-div" id="userMap"></div>
         </div>
-        <h4>Leader Board</h4>
+        <h4 class="section-header">Leaderboard</h4>
+        <p class="margin-bottom">See how you stack up against the top 10 players in your city!</p>
         <div class="boxy-div" id="map-container" style="width:100%; height:400px;">
         </div>
         <hr>
         <div class="boxy-div flex">
                 <div>
-                    <h3>Your Points:<span class="highlight"> {{user.points}}</span></h3>
+                    <h3>Your Total Points:<span class="highlight"> {{user.points}}</span></h3>
                 </div>
                 <div>
-                    <img v-if="user.last_action.name === 'recycle'" src="/img/recycling.png">
-                    <img v-if="user.last_action.name === 'donate'" src="/img/house.png">
-                    <img v-if="user.last_action.name === 'carpool'" src="/img/electric-car.png">
+                    <img class="move-down" height="75" width="75" v-if="user.last_action.name === 'recycle'" src="/img/recycling.png">
+                    <img class="move-down" height="75" width="75" v-if="user.last_action.name === 'donate'" src="/img/house.png">
+                    <img class="move-down" height="75" width="75" v-if="user.last_action.name === 'carpool'" src="/img/electric-car.png">
                     <h4>Latest Action</h4>
                     <p>Action: {{user.last_action.name}}</p>
                     <p>Amount: {{user.last_action.amount}}</p>
@@ -681,7 +681,6 @@
       </div>
       <br>
       <button class="btn btn-primary" type="submit" v-on:click="createLocation()">Submit</button>
-    
   </div>
 </template>
 
@@ -693,7 +692,7 @@
   <div id="vue-component">
 
     <h1>My Locations</h1>
-    <div v-for="location in locations">
+    <div class="move-down" v-for="location in locations">
       <h4 v-if="location.is_default === true" class="active"> Current Default Location </h4>
       <p>Street Address: {{location.street_address}}</p>
       <p>City: {{location.city}}</p>
@@ -701,7 +700,7 @@
       <p>Zip: {{location.zip}}</p>
       <button class="btn-sm btn-primary" v-on:click="setDefault(location)" v-if="location.is_default === false">Set As Default</button>
       <button class="btn-sm btn-danger" v-on:click="deleteLocation(location)">Delete this location</button>
-      <p style="border-bottom: 2px solid grey"></p>
+      <hr>
     </div>
   </div>
 </template>
@@ -711,19 +710,34 @@
 <!--===========================-->
 
 <template id="useractions">
-    <div id="vue-component">
+    <div id="vue-component" class="flex-card">
+        <h1>My Actions</h1>
+        <p>View a list of your recent actions and track your points and progress.</p>
+        <div v-for="userAction in userActions" >
+            <div class="card flex-action">
+              <img class="card-img-top move-left move-down" v-if="userAction.name === 'donate'" src="/img/house.png" height="100" width="100">
+              <img class="card-img-top move-left move-down" v-if="userAction.name === 'recycle'" src="/img/recycling.png" height="100" width="100">
+              <img class="card-img-top move-left move-down" v-if="userAction.name === 'carpool'" src="/img/electric-car.png" height="100" width="100">
+              <div class="card-block">
+                    <h4 class="card-title">Action: {{userAction.name}}</h4>
+                    <p class="card-text">Amount: {{userAction.amount}}</p>
+                    <p class="card-text">Points earned: {{userAction.sum}}</p>
+                    <p class="card-text">When: {{userAction.created_at}}</p>
+              </div>
+            </div>
+        </div>
+    </div>
+</template>
 
-      <h1>My Actions</h1>
-    <!-- PRINT USERACTIONS -->
+      <!-- <h1>My Actions</h1> -->
+    <!-- PRINT USERACTIONS --><!-- 
       <div v-for="userAction in userActions">
         <p>Action: {{userAction.name}}</p>
         <p>Amount: {{userAction.amount}}</p>
         <p>Points earned: {{userAction.sum}}</p>
         <p>When: {{userAction.created_at}}</p>
         <hr>
-      </div>
-    </div>
-</template>
+      </div> -->
 
 <!-- =========================== -->
 <!-- CREATE USERACTION -->
@@ -733,6 +747,21 @@
   <div class="vue-component">
     
       <h1>Add an action</h1>
+      <p class="margin-bottom">Add your positive contributitions to the environment here! Each action is based on the following point value system:</p>
+      <div class="flex margin-bottom">
+            <div class="flex-card action-card">
+                <h6><span class="highlight">Recycle:</span><img src="/img/recycling.png" height="50" width="50" class="move-right"></h6>
+                <p class="remove-margin"> 50 per pound</p>
+            </div>
+            <div class="flex-card action-card">
+                <h6><span class="highlight">Carpool:</span><img src="/img/electric-car.png" height="50" width="50" class="move-right"></h6>
+                <p class="remove-margin"> 150 per miles traveled</p>
+            </div>
+            <div class="flex-card action-card">
+                <h6><span class="highlight">Donate:</span><img src="/img/house.png" height="50" width="50" class="move-right"></h6>
+                <p class="remove-margin"> 200 per item donated</p>
+            </div>
+      </div>
       <form class="form-inline">
         <div class="form-row align-items-center">
           <div class="col-auto my-1">

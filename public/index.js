@@ -363,7 +363,7 @@ var NewUserAction = {
       pointValue = 50;
     } else if (this.actionOption === "2" ) {
       pointValue = 200;
-    } else if (this.actionOption === "4") {
+    } else if (actionOption === "4") {
       pointValue = 150;
     }
     return this.amount * pointValue
