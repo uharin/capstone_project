@@ -18,13 +18,10 @@ class LocationsController < ApplicationController
     if location.is_default != false and Location.all.where(user_id: current_user.id).empty?
       p "I made it inside the if"
       location.save
-    elsif location.is_default == false and Location.all.where(user_id: current_user.id).empty?
-      p "I made it inside the elsif"
-      location.is_default == true
-      location.save
-      "I saved in the elsif"
-    else
+    elsif location.is_default == false and Location.all.where(user_id:current_user.id).any?
       p "I made it inside the else"
+      location.save
+    else
       old_default = Location.find_by(is_default: true, user_id: current_user.id)
       old_default.default?
       old_default.save
@@ -32,7 +29,7 @@ class LocationsController < ApplicationController
     end
     # if location.save
       # p "I saved!"
-      render json: location.as_json
+    render json: location.as_json
     # end
   end
 
@@ -52,12 +49,7 @@ class LocationsController < ApplicationController
   
   def update
     location = Location.find_by(id: params[:id])
-    # location.update(
-    #   street_address: params[:street_address],
-    #   city: params[:city],
-    #   state: params[:state],
-    #   zip: params[:zip]
-    # )
+    
     if location.is_default == false
       old_default = Location.find_by(is_default: true, user_id: current_user.id)
       old_default.default?

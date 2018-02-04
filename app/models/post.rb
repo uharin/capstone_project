@@ -11,7 +11,8 @@ class Post < ApplicationRecord
     {
     post_text: post_text,
     created_at: convert_time(created_at),
-    posted_by: user.get_name
+    posted_by: user.get_name,
+    board_thread: board_thread.title
     }
   end
 

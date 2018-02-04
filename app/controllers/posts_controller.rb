@@ -13,6 +13,7 @@ class PostsController < ApplicationController
       board_thread_id: params[:board_thread_id]
       })
     post.save
+    render json: post.as_json
   end
 
   def destroy

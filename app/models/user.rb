@@ -44,7 +44,11 @@ class User < ApplicationRecord
     last_action = UserAction.last
 
     # get last user_action for dashboard
-    # last_post = User.all.map { |u| u.posts.last }
+    posts = input_user.posts
+    last_post = posts.last
+    p "PRINTING LAST POST"
+    p last_post
+
   # =========================================
     {
       name: get_name,
@@ -55,8 +59,8 @@ class User < ApplicationRecord
       state: current_state,
       latitude: current_latitude,
       longitude: current_longitude,
-      last_action: last_action.as_json
-      # last_post: last_post.as_json
+      last_action: last_action.as_json,
+      last_post: last_post.as_json
     }
   end
     

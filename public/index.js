@@ -8,8 +8,6 @@ var HomePage = {
   template: "#home-page",
   data: function() {
     return {
-      message: 
-        "Welcome to Wurld!"
     };
   }
 };
@@ -26,6 +24,19 @@ var Dashboard = {
       places: [],
       user: {
         local_users: [],
+        last_action: {
+          name: "",
+          amount: "",
+          created_at: "",
+          point_value: "",
+          sum: ""
+        },
+        last_post: {
+          board_thread: "",
+          created_at: "",
+          post_text: "",
+          posted_by: ""
+        }
       },
       userMap: null
     };
@@ -35,8 +46,10 @@ var Dashboard = {
     // Have to run this so dashboard data is available
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
+      console.log(response.data)
     }.bind(this));
   },
+
   mounted: function() {
 
     axios.get('/users/:id').then(function(response) {
@@ -58,7 +71,7 @@ var Dashboard = {
           type: 'column'
         },
         title: {
-          text: 'Leaderboard'
+          text: 'Top 10 players in ' + loggedUser.city
         },
         xAxis: {
           categories: ['Users']
@@ -133,9 +146,6 @@ var Dashboard = {
       
         var initMap = function(user, places) {
 
-          console.log("Init map function");
-          // console.log(this.user.latitude);
-
           // create map and center on user lat, lng
           var userLocation = {lat: user.latitude, lng: user.longitude};
           var map = new google.maps.Map(document.getElementById('userMap'), {
@@ -144,13 +154,13 @@ var Dashboard = {
             scrollwheel: false
           });
 
-          // loop through places and create new markers for each
-          
+          // set custom icon
           var icon = {
-            url: "recycling.png", // url
+            url: "/img/recycling.png", // url
             scaledSize: new google.maps.Size(30, 30), //  size
           };
           
+          // loop through places and create new markers for each
           for (var i = 0; i < places.length; i++) {
             var location = places[i].geometry.location;
             var placeName = places[i].name;
@@ -252,6 +262,7 @@ var NewLocation = {
         is_default: this.location.defaultLocation
       };
       axios.post("/locations", params).then(function(response) {
+        alert("You've added a new location in: " + this.location.city + ", " + this.location.state);
         router.push("/locations");
       }.bind(this));
     }
@@ -330,6 +341,8 @@ var NewUserAction = {
     return {
       actionOption: true,
       amount: "",
+      totalPoints: "",
+      pointValue: 0 
     };
   },
   methods: {
@@ -342,6 +355,19 @@ var NewUserAction = {
         router.push("/useractions");
       }.bind(this));
     }
+  },
+  computed: {
+
+    calcPoints: function() {
+      if (this.actionOption === "1") {
+      pointValue = 50;
+    } else if (this.actionOption === "2" ) {
+      pointValue = 200;
+    } else if (this.actionOption === "4") {
+      pointValue = 150;
+    }
+    return this.amount * pointValue
+    },
   }
 };
 
@@ -449,6 +475,7 @@ var ShowThread = {
       this.boardPosts = response.data;
     }.bind(this));
 
+  // I know :id isn't doing anything, but it helps me know what it's doing on the back end + matches right route
     axios.get('/users/:id').then(function(response) {
       console.log(response.data);
       this.current_user = response.data;
@@ -464,12 +491,10 @@ var ShowThread = {
       };
 
       axios.post("/posts", params).then(function(response) {
-        this.boardPosts.push(this.newPost);
-      }.bind(this));
-      
-      axios.get('/threads/' + this.$route.params.id).then(function(response) {
-        this.boardPosts = response.data;
-        console.log(this.boardPosts);
+        console.log(this.boardPosts[0]);
+        console.log(this.newPost);
+        console.log(response);
+        this.boardPosts.push(response.data);
       }.bind(this));
     },
 
@@ -599,10 +624,18 @@ var router = new VueRouter({
 var app = new Vue({
   el: "#vue-app",
   router: router,
+  data: {
+    user: {},
+  },
   created: function() {
     var jwt = localStorage.getItem("jwt");
     if (jwt) {
       axios.defaults.headers.common["Authorization"] = jwt;
     }
+
+    axios.get('/users/:id').then(function(response) {
+      this.user = response.data;
+    }.bind(this));
+
   }
 });

@@ -25,12 +25,8 @@
     <link href="premium/icon-sets/icons/line-icons/premium-line-icons.min.css" rel="stylesheet">
     <link href="premium/icon-sets/icons/solid-icons/premium-solid-icons.min.css" rel="stylesheet">
 
-    <style>
-       #userMap {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
+    <!-- Alex Custom CSS -->
+    <link href="css/alex.css" rel="stylesheet">
 
     <!--=================================================-->
 
@@ -46,8 +42,6 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
-
-    
     <!-- GOOGLE MAPS -->
     
     <script async defer
@@ -92,9 +86,9 @@
                 <!--================================-->
                 <div class="navbar-header">
                     <a href="index.html" class="navbar-brand">
-                        <img src="img/logo.png" alt="Nifty Logo" class="brand-icon">
+                        <img src="img/logo.ico" alt="WURLD Logo" class="brand-icon">
                         <div class="brand-title">
-                            <span class="brand-text">WURLD</span>
+                            <span class="brand-text">W<span style="text-decoration: underline; color: #2ECC71">URL</span>D</span>
                         </div>
                     </a>
                 </div>
@@ -133,23 +127,23 @@
 
                                         <!--Mega menu list-->
                                         <ul class="list-unstyled">
-									        <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-calendar-4 icon-fw"></i>Locations</p>
+									        <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-compass-4 icon-fw"></i>Locations</p>
                         <p class="pad-top mar-top bord-top text-sm">Add, delete, or set a default location to view local places to recycle!</p>
 
                                     </div>
                                     <div class="col-sm-4 col-md-3">
 
                                         <!--Mega menu list-->
-                                        <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-calendar-4 icon-fw"></i>Message Board</p>
+                                        <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-pen-4 icon-fw"></i>Message Board</p>
                                         <p class="pad-top mar-top bord-top text-sm">Connect with those around you and work together to help the environment!</p>
                                     </div>
                                     <div class="col-sm-4 col-md-3">
-                                      <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-calendar-4 icon-fw"></i>Leaderboards</p>
-                                        <p class="pad-top mar-top bord-top text-sm">Compete with others around you and across the globe to see who is the greenest and greatest!</p>
+                                      <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-bar-chart-4 icon-fw"></i>Leaderboard</p>
+                                        <p class="pad-top mar-top bord-top text-sm">Compete with others around you to see who is the greenest and greatest!</p>
                                     </div>
                                     <div class="col-sm-4 col-md-3">
-                                      <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-calendar-4 icon-fw"></i>Actions</p>
-                                        <p class="pad-top mar-top bord-top text-sm">Track your positive contributions to the environment to gain points and levels!</p>
+                                      <p class="pad-top text-main text-sm text-uppercase text-bold"><i class="icon-lg pli-tree-4 icon-fw"></i>Actions</p>
+                                        <p class="pad-top mar-top bord-top text-sm">Track your positive contributions to the environment to gain points!</p>
                                     </div>
                                     <div class="col-sm-4 col-md-3">
                                     
@@ -178,7 +172,7 @@
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                                 <ul class="head-list">
                                     <li>
-                                        <a href="#"><i class="pli-male icon-lg icon-fw"></i> Profile</a>
+                                        <a href="/#/dashboard"><i class="pli-male icon-lg icon-fw"></i> Dashboard</a>
                                     </li>
                                     <li>
                                         <a href="#"><span class="badge badge-danger pull-right">9</span><i class="pli-mail icon-lg icon-fw"></i> Messages</a>
@@ -230,9 +224,8 @@
 					        <div class="panel panel-body">
 					            <div class="panel-body">
 					
-					                <!-- <h3>Locations</h3> -->
-                          <router-view></router-view>
-					                <br>
+                                    <router-view></router-view>
+					                
 					            </div>
 					        </div>
 					    </div>
@@ -261,15 +254,7 @@
 
                     <!--OPTIONAL : ADD YOUR LOGO TO THE NAVIGATION-->
                     <!--It will only appear on small screen devices.-->
-                    <!--================================
-                    <div class="mainnav-brand">
-                        <a href="index.html" class="brand">
-                            <img src="img/logo.png" alt="Nifty Logo" class="brand-icon">
-                            <span class="brand-text">Nifty</span>
-                        </a>
-                        <a href="#" class="mainnav-toggle"><i class="pci-cross pci-circle icon-lg"></i></a>
-                    </div>
-                    -->
+                    <!--================================-->
 
 
 
@@ -290,13 +275,13 @@
                                             <span class="pull-right dropdown-toggle">
                                                 <i class="dropdown-caret"></i>
                                             </span>
-                                            <p class="mnp-name">Aaron Chavez</p>
-                                            <span class="mnp-desc">aaron.cha@themeon.net</span>
+                                            <p class="mnp-name">{{user.name}}</p>
+                                            <span class="mnp-desc">{{user.email}}</span>
                                         </a>
                                     </div>
                                     <div id="profile-nav" class="collapse list-group bg-trans">
-                                        <a href="#" class="list-group-item">
-                                            <i class="pli-male icon-lg icon-fw"></i> View Profile
+                                        <a href="/#/dashboard" class="list-group-item">
+                                            <i class="pli-male icon-lg icon-fw"></i> View Dashboard
                                         </a>
                                         <a href="/#/logout" class="list-group-item">
                                             <i class="pli-unlock icon-lg icon-fw"></i> Logout
@@ -319,14 +304,14 @@
                                         <li class="col-xs-4" data-content="My Locations">
                                             <a class="shortcut-grid" href="/#/locations">
                                                 <div class="icon-wrap icon-wrap-sm icon-circle bg-warning">
-                                                <i class="pli-speech-bubble-3"></i>
+                                                <i class="pli-compass-4"></i>
                                                 </div>
                                             </a>
                                         </li>
                                         <li class="col-xs-4" data-content="My Actions">
                                             <a class="shortcut-grid" href="/#/useractions">
                                                 <div class="icon-wrap icon-wrap-sm icon-circle bg-success">
-                                                <i class="pli-computer-secure"></i>
+                                                <i class="pli-tree-4"></i>
                                                 </div>
                                             </a>
                                         </li>
@@ -344,7 +329,7 @@
 						            <!--Menu list item-->
 						            <li>
 						                <a href="/#/locations/new">
-						                    <i class="pli-quill-2"></i>
+						                    <i class="pli-compass-3"></i>
 						                    <span class="menu-title">Add a Location</span>
 						                </a>
 						            </li>
@@ -352,7 +337,7 @@
 						            <!--Menu list item-->
 						            <li>
 						                <a href="/#/useractions/new">
-						                    <i class="pli-mail-love"></i>
+						                    <i class="pli-tree"></i>
 						                    <span class="menu-title">
 												<strong>Add an Action</strong>
 											</span>
@@ -362,25 +347,12 @@
 						            <!--Menu list item-->
 						            <li>
 						                <a href="/#/messageboard">
-						                    <i class="pli-gamepad-2"></i>
+						                    <i class="pli-pen-3"></i>
 						                    <span class="menu-title">
 												Message Board
-												<span class="label label-success pull-right">New</span>
 											</span>
 						                </a>
 						            </li>
-						
-						            <!--Menu list item-->
-						            <li>
-						                <a href="#">
-						                    <i class="pli-usb"></i>
-						                    <span class="menu-title">
-												Leaderboards
-												<span class="pull-right badge badge-purple">7</span>
-											</span>
-						                </a>
-						            </li>
-						
 						            <li class="list-divider"></li>
                             </div>
                         </div>
@@ -405,7 +377,7 @@
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
                                     <a href="#demo-asd-tab-1" data-toggle="tab">
-                                        <i class="pli-speech-bubble-7"></i>
+                                        <img src="img/logo.ico">
                                     </a>
                                 </li>
                             </ul>
@@ -421,9 +393,9 @@
                                 <!--First tab-->
                                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                                 <div class="tab-pane fade in active" id="demo-asd-tab-1">
-                                    <p class="pad-all text-lg">About WURLD</p>
+                                    <p class="pad-all text-lg">About W<span style="text-decoration: underline; color: #2ECC71">URL</span>D</p>
                                     <div class="pad-hor">
-                                        WURLD is a environmental impact app geared at providing a way to track one's positive contributions to the environment and to engage in friendly competition with others in the surrounding area. It is meant to provide users with easy ways to track their recycling habits through gamification, and create a community where like-minded individuals can help and inspire each other to make environmentally-conscious decisions.
+                                        W<span style="text-decoration: underline; color: #2ECC71">URL</span>D is a environmental impact app geared at providing a way to track one's positive contributions to the environment and to engage in friendly competition with others in the surrounding area. It is meant to provide users with easy ways to track their recycling habits through gamification, and create a community where like-minded individuals can help and inspire each other to make environmentally-conscious decisions.
                                     </div>
                                 </div>
                                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -586,15 +558,39 @@
   <div class="vue-component">
     
     <div>
-      <p>{{message}}</p>
-      <h3>{{user.name}}'s Dashboard</h3>
-      <p>Points: {{user.points}}</p>
-      <p>Default Location: {{user.city}}, {{user.state}}</p>
-      <div id="userMap"></div>
-      <div id="map-container" style="width:100%; height:400px;">
-          
-      </div>
-      <hr>
+        <h1>Welcome to W<span class="highlight" style="text-decoration: underline">URL</span>D</h1>
+        <h3>{{user.name}}'s Dashboard</h3>
+        
+        <p>Current Location: {{user.city}}, {{user.state}}</p>
+        <div class="boxy-div">
+            <div class= "boxy-div" id="userMap"></div>
+        </div>
+        <h4>Leader Board</h4>
+        <div class="boxy-div" id="map-container" style="width:100%; height:400px;">
+        </div>
+        <hr>
+        <div class="boxy-div flex">
+                <div>
+                    <h3>Your Points:<span class="highlight"> {{user.points}}</span></h3>
+                </div>
+                <div>
+                    <img v-if="user.last_action.name === 'recycle'" src="/img/recycling.png">
+                    <img v-if="user.last_action.name === 'donate'" src="/img/house.png">
+                    <img v-if="user.last_action.name === 'carpool'" src="/img/electric-car.png">
+                    <h4>Latest Action</h4>
+                    <p>Action: {{user.last_action.name}}</p>
+                    <p>Amount: {{user.last_action.amount}}</p>
+                    <p>Points earned: {{user.last_action.sum}}</p>
+                    <p>When: {{user.last_action.created_at}}</p>
+                </div>
+            </div>
+        <hr>
+        <div class= "boxy-div">
+            <h4>Latest Post</h4>
+            <p>Thread: {{user.last_post.board_thread}}</p>
+            <p>Posted on: {{user.last_post.created_at}}</p>
+            <p>{{user.last_post.post_text}}</p>
+        </div>
     </div>
 
   </div>
@@ -748,20 +744,23 @@
               <option value="4">Carpool</option>
             </select>
             <div class="form-group" v-if="actionOption === '1'">
-              <label>Amount (in pounds):</label>
+              <label class="move-right">Amount (in pounds):</label>
               <input type="text" class="form-control" v-model="amount">
             </div>
             <div class="form-group" v-if="actionOption === '2'">
-              <label>Number of items donated:</label>
+              <label class="move-right">Number of items donated:</label>
               <input type="text" class="form-control" v-model="amount">
             </div>
             <div class="form-group" v-if="actionOption === '4'">
-              <label>Distance (in miles):</label>
+              <label class="move-right">Distance (in miles):</label>
               <input type="text" class="form-control" v-model="amount">
             </div>
-          </div>
-            <button class="btn btn-primary" type="submit" v-on:click="createUserAction()">Submit</button>
+            <div class="form-group" v-if="amount">
+                <label class="move-right">Total Points Earned: {{calcPoints}}</label>
+            </div>
         </div>
+        <hr>
+            <button class="btn btn-primary" type="submit" v-on:click="createUserAction()">Submit</button>
       </form>
   </div>
 </template>
