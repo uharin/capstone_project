@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Expanded Navigation | Nifty - Admin Template</title>
+    <title>WURLD - an environmental impact app</title>
 
 
     <!--STYLESHEET-->
@@ -14,6 +14,7 @@
 
     <!--Open Sans Font [ OPTIONAL ] -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -73,7 +74,7 @@
 <!--TIPS-->
 <!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
 
-<body>
+<body id="body">
   <div id="vue-app">
     <div id="container" class="effect aside-float aside-bright mainnav-lg">
         
@@ -86,7 +87,7 @@
                 <!--================================-->
                 <div class="navbar-header">
                     <a href="index.html" class="navbar-brand">
-                        <img src="img/logo.ico" alt="WURLD Logo" class="brand-icon">
+                        <img src="img/logo-old.ico" alt="WURLD Logo" class="brand-icon" height="75" width="75">
                         <div class="brand-title">
                             <span class="brand-text">W<span style="text-decoration: underline; color: #2ECC71">URL</span>D</span>
                         </div>
@@ -377,7 +378,7 @@
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
                                     <a href="#demo-asd-tab-1" data-toggle="tab">
-                                        <img src="img/logo.ico">
+                                        <img src="/img/logo-old.ico" heigh="200" width="200">
                                     </a>
                                 </li>
                             </ul>
@@ -484,7 +485,6 @@
     <a href="/#/signup">Sign Up</a>
     <a href="/#/login">Login</a>
     <div>
-      <p>{{message}}</p>
       <hr>
     </div>
   </div>
@@ -495,7 +495,48 @@
 <!-- SIGN UP -->
 <!--===========================-->
 
-<template id="signup-page">
+    <template id="signup-page">
+        <div id="vue-component">
+        <div id="container" class="cls-container">
+            <div id="bg-overlay" class="bg-img" style="background-image: url(img/bg-img-3.jpg)"></div>
+            <!-- LOGIN FORM -->
+            <div class="cls-content">
+                <div class="cls-content-sm panel">
+                    <div class="panel-body">
+                        <div class="mar-ver pad-btm">
+                        <img src="/img/logo-old.ico" heigh="75" width="75">
+                            <h1 class="h3">Join WURLD!</h1>
+                            <p>Create an account</p>
+                        </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="FirstName" autofocus v-model="firstName">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="LastName" autofocus v-model="lastName">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Email" autofocus v-model="email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" v-model="password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Email" autofocus v-model="passwordConfirmation">
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="signup()">Sign Up</button>
+                    </div>
+                    <ul>
+                        <li class="text-danger" v-for="error in errors">{{error}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- ORIGINAL SIGNUP -->
+
+<!-- <template id="signup-page">
   <div class="vue-component">
     <div class="container">
       <h1>Signup</h1>
@@ -525,13 +566,50 @@
       <button class="btn btn-primary" v-on:click="signup()">Sign Up</button>
     </div>
   </div>
-</template>
+</template> -->
 
 <!--===========================-->
 <!-- LOGIN -->
 <!--===========================-->
 
+
 <template id="login-page">
+    <div id="vue-component">
+        <div id="container" class="cls-container">
+            <div id="bg-overlay" class="bg-img" style="background-image: url(img/bg-img-3.jpg)"></div>
+            <!-- LOGIN FORM -->
+            <div class="cls-content">
+                <div class="cls-content-sm panel">
+                    <div class="panel-body">
+                        <div class="mar-ver pad-btm">
+                            <img src="/img/logo-old.ico" heigh="75" width="75">
+                            <h1 class="h3">Login to WURLD</h1>
+                            <p>Sign In to your account</p>
+                        </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Email" autofocus v-model="email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" v-model="password">
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="login()">Sign In</button>
+                    </div>
+                    <ul>
+                        <li class="text-danger" v-for="error in errors">{{error}}</li>
+                    </ul>
+                    <div class="pad-all">
+                        <a href="#" class="btn-link mar-rgt">Forgot password ?</a>
+                        <a href="/#/signup" class="btn-link mar-lft">Create a new account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- ORIGINAL LOGIN -->
+
+<!-- <template id="login-page">
   <div id="vue-component">
       <h1>Login</h1>
       <ul>
@@ -547,7 +625,7 @@
       </div>
       <button class="btn btn-primary" v-on:click="login()">Login</button>
   </div>
-</template>
+</template> -->
 
 
 <!--===========================-->
@@ -556,22 +634,27 @@
 
 <template id="dashboard">
   <div class="vue-component">
-    
     <div>
-        <h1 class="margin-bottom">{{user.name}}'s Dashboard</h1>
-        <h4> Current Location: {{user.city}}, {{user.state}}</h4>
+        <div class="current-location">
+            <h1 id="dashboard-header">{{user.name}}'s Dashboard</h1>
+            <h6 class="current-location-header"><a style="color:white; font-size:1.2em" href="/#/locations">Current Location: {{user.city}}, {{user.state}}</a></h6>
+        </div>
+        <hr>
+        <h4>Recycling Places Near You</h4>
         <p class="margin-bottom">See the map below for a list of places near you that can help you earn points by recycling:</p>
         <div class="boxy-div margin-bottom">
             <div class= "boxy-div" id="userMap"></div>
+            <div class="flex move-down"><p> Your location: <img src="/img/Google_maps.png" height="35" width="35"></p><p>Recycling locations: <img src="/img/recycling.png" height="35" width="35"></p></div> 
         </div>
+        <hr>
         <h4 class="section-header">Leaderboard</h4>
         <p class="margin-bottom">See how you stack up against the top 10 players in your city!</p>
-        <div class="boxy-div" id="map-container" style="width:100%; height:400px;">
+        <div class="boxy-div" id="map-container" style="width:100%; height:500px;">
         </div>
         <hr>
         <div class="boxy-div flex">
                 <div>
-                    <h3>Your Total Points:<span class="highlight"> {{user.points}}</span></h3>
+                    <h3>Your Points:<span class="highlight"> {{user.points}}</span></h3>
                 </div>
                 <div>
                     <img class="move-down" height="75" width="75" v-if="user.last_action.name === 'recycle'" src="/img/recycling.png">
@@ -586,10 +669,18 @@
             </div>
         <hr>
         <div class= "boxy-div">
-            <h4>Latest Post</h4>
-            <p>Thread: {{user.last_post.board_thread}}</p>
-            <p>Posted on: {{user.last_post.created_at}}</p>
-            <p>{{user.last_post.post_text}}</p>
+            <div class="move-right">
+                <h4>Latest Post</h4>
+                <div v-if="user.last_post !== null">
+                    <p></p>
+                    <p>Thread: {{user.last_post.board_thread}}</p>
+                    <p>Posted on: {{user.last_post.created_at}}</p>
+                    <p>{{user.last_post.post_text}}</p>
+                </div>
+                <div v-else>
+                    <p>You have no posts yet for this location.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -604,7 +695,6 @@
 
 <template id="new-location">
   <div class="vue-component">
-    
       <h1>Create New Location</h1>
       <div class="form-group">
         <label>Street Address:</label>
@@ -723,6 +813,7 @@
                     <p class="card-text">Amount: {{userAction.amount}}</p>
                     <p class="card-text">Points earned: {{userAction.sum}}</p>
                     <p class="card-text">When: {{userAction.created_at}}</p>
+                    <hr>
               </div>
             </div>
         </div>
@@ -762,8 +853,7 @@
                 <p class="remove-margin"> 200 per item donated</p>
             </div>
       </div>
-      <form class="form-inline">
-        <div class="form-row align-items-center">
+        <div class="form-row form-inline align-items-center">
           <div class="col-auto my-1">
             <label class="mr-sm-2" id="inlineFormCustomSelect">Action</label>
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" v-model="actionOption">
@@ -790,7 +880,6 @@
         </div>
         <hr>
             <button class="btn btn-primary" type="submit" v-on:click="createUserAction()">Submit</button>
-      </form>
   </div>
 </template>
 
@@ -818,7 +907,7 @@
 
     <!-- PRINT BOARD THREADS -->
       <div v-for="boardThread in boardThreads">
-        <div class="card" style="width: 100%; border: solid 1px light-grey; padding: 1em; margin: 1em">
+        <div class="card" style="width: 100%; ">
           <div class="card-body">
             <h5 class="card-title">{{boardThread.title}}</h5>
             <p class="card-text">Posted by: {{boardThread.posted_by}}</p>
@@ -827,6 +916,7 @@
             <button class="btn-sm btn-danger" v-if="boardThread.posted_by === current_user.name" v-on:click="deleteThread(boardThread)">Delete Thread</button>
           </div>
         </div>
+        <hr>
       </div>
     </div>
 </template>

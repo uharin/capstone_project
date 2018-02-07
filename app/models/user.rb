@@ -44,10 +44,10 @@ class User < ApplicationRecord
     last_action = UserAction.last
 
     # get last user_action for dashboard
+
+    # get posts for user
     posts = input_user.posts
     last_post = posts.last
-    p "PRINTING LAST POST"
-    p last_post
 
   # =========================================
     {

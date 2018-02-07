@@ -1,8 +1,8 @@
 .boxy-div {
   box-sizing: border-box;
   padding: 1em;
-  border:.1em solid #E8E8E8;
-  background-color:#F8F8F8;
+  border: .1em solid #E8E8E8;
+  background-color: #F8F8F8;
 }
 
 #userMap {
@@ -24,17 +24,14 @@
 
 .flex-action {
   display: flex;
-  justify-content: center; 
+  justify-content: flex-start; 
   flex-wrap: wrap;
   padding: 1em;
 }
 
 .highlight {
   color: #27ae60;
-}
-
-h1 {
-  margin-bottom: .5em;
+  font-size: 1.6em;
 }
 
 .move-right {
@@ -74,9 +71,53 @@ h1 {
 .spotlight {
   background-color: #294f75;
   color: white;
-  padding: .em;
+  padding: .2em;
 }
 
 .card {
   margin: 0;
+}
+
+.current-location {
+  padding: 1em;
+  background-color: #2ECC71;
+  color: #FFF;
+  border: solid .4em #49B86E;
+}
+
+#dashboard-header {
+  color: white;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+.current-location-header {
+  text-align: center;
+}
+
+div > .panel-body {
+  margin-top: 0;
+  padding: 1em;
+}
+
+.panel-body {
+  padding: 0;
+}
+
+.panel-body div {
+  padding: .5em;
+}
+
+div > .cls-content {
+  margin-top: 5em;
+  padding: 2em;
+}
+
+.map-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.inline {
+  display: inline-block;
 }

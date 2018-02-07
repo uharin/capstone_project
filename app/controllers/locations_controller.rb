@@ -49,8 +49,17 @@ class LocationsController < ApplicationController
   
   def update
     location = Location.find_by(id: params[:id])
-    
-    if location.is_default == false
+
+    if location.is_default != false and Location.all.where(user_id: current_user.id).empty?
+      p "I made it inside the if"
+      location.save
+    # elsif location.is_default == false and Location.all.where(user_id: current_user.id, is_default: true).any?
+    #   p "I made it inside the else"
+    #   location.save
+    elsif location.is_default == false and Location.all.where(user_id: current_user.id, is_default:true).empty?
+      location.default?
+      location.save
+    else
       old_default = Location.find_by(is_default: true, user_id: current_user.id)
       old_default.default?
       old_default.save
@@ -62,6 +71,11 @@ class LocationsController < ApplicationController
   def destroy
     location = Location.find_by(id: params[:id])
     location.destroy
+    if Location.all.where(is_default:true, user_id:current_user.id).empty?
+      location_default = Location.find_by(user_id: current_user.id)
+      location_default.default?
+      location_default.save
+    end 
   end
 
   def find_default

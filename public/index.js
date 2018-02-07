@@ -20,9 +20,11 @@ var Dashboard = {
   template: "#dashboard",
   data: function() {
     return {
-      message: "Welcome to WURLD!",
       places: [],
       user: {
+        name: "",
+        email: "",
+        points: "",
         local_users: [],
         last_action: {
           name: "",
@@ -46,7 +48,6 @@ var Dashboard = {
     // Have to run this so dashboard data is available
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
-      console.log(response.data)
     }.bind(this));
   },
 
@@ -54,11 +55,8 @@ var Dashboard = {
 
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
-      console.log(this.user);
       var loggedUser = this.user;
       var localUsers = this.user.local_users;
-      console.log("Local users are");
-      console.log(localUsers);
       
       // maybe come back to this to reduce code 
       // var mappedPoints = [];
@@ -68,7 +66,8 @@ var Dashboard = {
 
       var myChart = Highcharts.chart('map-container', {
         chart: {
-          type: 'column'
+          type: 'column',
+          reflow: true
         },
         title: {
           text: 'Top 10 players in ' + loggedUser.city
@@ -142,7 +141,6 @@ var Dashboard = {
       axios.get('/places').then(function(response) {
         this.places = response.data;
         var recylingPlaces = this.places;
-        console.log(this.places);
       
         var initMap = function(user, places) {
 
@@ -151,7 +149,21 @@ var Dashboard = {
           var map = new google.maps.Map(document.getElementById('userMap'), {
             zoom: 12,
             center: userLocation,
-            scrollwheel: false
+            scrollwheel: false,
+          });
+          var userMarker = new google.maps.Marker({
+            position: userLocation,
+            map: map,
+          });
+          var userMarkerInfo = new google.maps.InfoWindow({
+            content: '<div class="userMap"><h6>' + "Your location" + '</h6> </div>',
+            disableAutoPan: true
+          });
+          userMarker.addListener('mouseover', function() {
+            userMarkerInfo.open(map, userMarker);
+          });
+          userMarker.addListener('mouseover', function() {
+            userMarkerInfo.close(map, userMarker);
           });
 
           // set custom icon
@@ -174,7 +186,7 @@ var Dashboard = {
               disableAutoPan: true
             });
             google.maps.event.addListener(marker, 'mouseover', function() {
-              this.info.open(map,this );
+              this.info.open(map,this);
             });
             google.maps.event.addListener(marker, 'mouseout', function() {
               this.info.close(map,this );
@@ -185,7 +197,7 @@ var Dashboard = {
         // ==============================
         $(document).ready(function() {
           initMap(loggedUser, recylingPlaces);
-          console.log("ready!");
+  
         });
       }.bind(this));
     });
@@ -206,7 +218,6 @@ var Locations = {
   },
   created: function() {
     axios.get('/locations').then(function(response) {
-      console.log(response.data);
       this.locations = response.data;
     }.bind(this));
   },
@@ -278,7 +289,6 @@ var UpdateLocation = {
   data: function() {
     return {
       location: {
-
       }
     };
   },
@@ -290,8 +300,6 @@ var UpdateLocation = {
     // THIS IS BROKEN
     // +++++++++++++++++++++++++++++++++++
     
-      console.log(response.body);
-      console.log(this.$route.params.id);
     }.bind(this));
   },
   methods: {
@@ -326,6 +334,7 @@ var UserActions = {
     axios.get('/user_actions').then(function(response) {
       console.log(response.data);
       this.userActions = response.data;
+      this.userActions.reverse()
     }.bind(this));
   },
 
@@ -342,7 +351,7 @@ var NewUserAction = {
       actionOption: true,
       amount: "",
       totalPoints: "",
-      pointValue: 0 
+      pointValue: 0,
     };
   },
   methods: {
@@ -360,13 +369,13 @@ var NewUserAction = {
 
     calcPoints: function() {
       if (this.actionOption === "1") {
-      pointValue = 50;
-    } else if (this.actionOption === "2" ) {
-      pointValue = 200;
-    } else if (actionOption === "4") {
-      pointValue = 150;
-    }
-    return this.amount * pointValue
+        var pointValue = 50;
+      } else if (this.actionOption === "2" ) {
+        pointValue = 200;
+      } else if (this.actionOption === "4") {
+        pointValue = 150;
+      }
+      return this.amount * pointValue;
     },
   }
 };
@@ -511,6 +520,10 @@ var ShowThread = {
   }, 
 };
 
+// ===================================
+// SIGNUP
+// ===================================
+
 var SignUp = {
   template: "#signup-page",
   data: function() {
@@ -520,7 +533,8 @@ var SignUp = {
       email: "",
       password: "",
       passwordConfirmation: "",
-      errors: []
+      errors: [],
+      showNav: false
     };
   },
   methods: {
@@ -553,7 +567,8 @@ var Login = {
     return {
       email: "",
       password: "",
-      errors: []
+      errors: [],
+      showNav: false
     };
   },
   methods: {
@@ -598,12 +613,12 @@ var Logout = {
 
 var router = new VueRouter({
   routes: [
-    { path: "/", component: HomePage },
+    { path: "/", component: Login },
     { path: "/signup", component: SignUp },
     { path: "/login", component: Login },
-    { path: "/logout", component: Logout },
+    { path: "/logout", component: Logout},
     { path: "/dashboard", component: Dashboard },
-    { path: "/useractions", component: UserActions },
+    { path: "/useractions", component: UserActions},
     { path: "/useractions/new", component: NewUserAction },
     { path: "/locations", component: Locations},
     { path: "/locations/new", component: NewLocation},
@@ -626,6 +641,7 @@ var app = new Vue({
   router: router,
   data: {
     user: {},
+    showNav: false
   },
   created: function() {
     var jwt = localStorage.getItem("jwt");
@@ -633,9 +649,9 @@ var app = new Vue({
       axios.defaults.headers.common["Authorization"] = jwt;
     }
 
-    axios.get('/users/:id').then(function(response) {
-      this.user = response.data;
-    }.bind(this));
+    // axios.get('/users/:id').then(function(response) {
+    //   this.user = response.data;
+    // }.bind(this));
 
   }
 });

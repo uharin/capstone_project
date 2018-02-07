@@ -89,6 +89,43 @@ var Login = {
 };
 
 // ===================================
+// ALT
+// ===================================
+
+var AltLogin = {
+  template: "#alt-login-page",
+  data: function() {
+    return {
+      email: "",
+      password: "",
+      errors: []
+    };
+  },
+  methods: {
+    login: function() {
+      var params = {
+        auth: { email: this.email, password: this.password }
+      };
+      axios
+        .post("/user_token", params)
+        .then(function(response) {
+          axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
+          localStorage.setItem("jwt", response.data.jwt);
+          router.push("index.html/dashboard");
+        })
+        .catch(
+          function(error) {
+            this.errors = ["Invalid email or password."];
+            this.email = "";
+            this.password = "";
+          }.bind(this)
+        );
+
+    }
+  },
+};
+
+// ===================================
 // LOGOUT
 // ===================================
 
