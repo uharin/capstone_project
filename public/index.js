@@ -48,6 +48,7 @@ var Dashboard = {
     // Have to run this so dashboard data is available
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
+      console.log(this.user);
     }.bind(this));
   },
 
@@ -56,7 +57,9 @@ var Dashboard = {
     axios.get('/users/:id').then(function(response) {
       this.user = response.data;
       var loggedUser = this.user;
+      console.log(loggedUser);
       var localUsers = this.user.local_users;
+      console.log(localUsers);
       
       // maybe come back to this to reduce code 
       // var mappedPoints = [];
